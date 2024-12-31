@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";
 import Unauthorized from "./components/Unauthorized";
 import { AuthProvider } from "./context/AuthContext";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 
 function App() {
   return (
@@ -43,7 +44,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <RoleRoute role="admin">
-                  <h1>Admin Dashboard</h1>
+                  <AdminDashboard />
                 </RoleRoute>
               </ProtectedRoute>
             }
