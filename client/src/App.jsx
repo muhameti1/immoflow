@@ -10,61 +10,64 @@ import Unauthorized from "./components/Unauthorized";
 import { AuthProvider } from "./context/AuthContext";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import Index from "./pages/properties/Index";
+import { ThemeProvider } from "./components/theme-provider";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              <AuthenticatedRoute>
-                <Login />
-              </AuthenticatedRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <AuthenticatedRoute>
-                <Register />
-              </AuthenticatedRoute>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/app/dashboard"
-            element={
-              <ProtectedRoute>
-                <RoleRoute role="admin">
-                  <AdminDashboard />
-                </RoleRoute>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/app/properties"
-            element={
-              <ProtectedRoute>
-                <Index />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/unauthorized" element={<Unauthorized />} />
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route
+              path="/login"
+              element={
+                <AuthenticatedRoute>
+                  <Login />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <AuthenticatedRoute>
+                  <Register />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/app/dashboard"
+              element={
+                <ProtectedRoute>
+                  <RoleRoute role="admin">
+                    <AdminDashboard />
+                  </RoleRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/app/properties"
+              element={
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/unauthorized" element={<Unauthorized />} />
 
-          {/* Add other routes here */}
-        </Routes>
-        <Toaster />
-      </Router>
-    </AuthProvider>
+            {/* Add other routes here */}
+          </Routes>
+          <Toaster />
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

@@ -24,7 +24,7 @@ export function NavMain({ items }) {
               tooltip={item.title}
               className={
                 item.url && isActive(item.url)
-                  ? "bg-sidebar-border text-black"
+                  ? "bg-sidebar-border text-black dark:text-white"
                   : ""
               }
             >
