@@ -40,7 +40,7 @@ function App() {
             }
           />
           <Route
-            path="/admin"
+            path="/app/dashboard"
             element={
               <ProtectedRoute>
                 <RoleRoute role="admin">
