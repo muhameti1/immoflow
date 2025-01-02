@@ -22,16 +22,22 @@ export function NavMain({ items }) {
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
               tooltip={item.title}
-              className={item.url && isActive(item.url) ? "active" : ""}
+              className={
+                item.url && isActive(item.url)
+                  ? "bg-sidebar-border text-black"
+                  : ""
+              }
             >
               {item.icon && <item.icon />}
-              <span>{item.title}</span>
+              <a href={item.url}>
+                <span>{item.title}</span>
+              </a>
             </SidebarMenuButton>
             {item.items?.map((subItem) => (
               <SidebarMenuItem key={subItem.title}>
                 <SidebarMenuButton
                   tooltip={subItem.title}
-                  className={isActive(subItem.url) ? "active" : ""}
+                  className={isActive(subItem.url) ? "bg-sidebar-accent" : ""}
                 >
                   <a href={subItem.url}>
                     <span>{subItem.title}</span>
