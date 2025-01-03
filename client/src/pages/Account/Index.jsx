@@ -16,6 +16,7 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import AdminLayout from "@/layouts/AdminLayout";
 import axiosInstance from "@/api/axios";
+import SettingsLayout from "@/layouts/SettingsLayout";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -150,190 +151,198 @@ const ProfilePage = () => {
   if (!user) return <div>Loading...</div>;
   return (
     <AdminLayout>
-      <div className="container mx-auto p-4 max-w-3xl">
-        <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
-          </TabsList>
+      <SettingsLayout>
+        <div className="container mx-auto p-4 max-w-3xl">
+          <Tabs defaultValue="profile" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="profile">Profile</TabsTrigger>
+              <TabsTrigger value="security">Security</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="profile">
-            <Card>
-              <CardHeader>
-                <CardTitle>Profile Settings</CardTitle>
-                <CardDescription>
-                  Update your profile information
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleProfileSubmit}>
-                  <div className="space-y-6">
-                    <div className="flex items-center space-x-4">
-                      <Avatar className="h-20 w-20">
-                        {profileData.avatar ? (
-                          <AvatarImage
-                            src={
-                              profileData.avatar instanceof File
-                                ? URL.createObjectURL(profileData.avatar)
-                                : `http://localhost:8000/storage/${profileData.avatar}`
-                            }
-                            alt={profileData.name}
+            <TabsContent value="profile">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Profile Settings</CardTitle>
+                  <CardDescription>
+                    Update your profile information
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleProfileSubmit}>
+                    <div className="space-y-6">
+                      <div className="flex items-center space-x-4">
+                        <Avatar className="h-20 w-20">
+                          {profileData.avatar ? (
+                            <AvatarImage
+                              src={
+                                profileData.avatar instanceof File
+                                  ? URL.createObjectURL(profileData.avatar)
+                                  : `http://localhost:8000/storage/${profileData.avatar}`
+                              }
+                              alt={profileData.name}
+                            />
+                          ) : (
+                            <AvatarFallback>
+                              {profileData.name?.charAt(0)}
+                            </AvatarFallback>
+                          )}
+                        </Avatar>
+                        <div>
+                          <Label htmlFor="avatar">Profile Picture</Label>
+                          <Input
+                            id="avatar"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarChange}
                           />
-                        ) : (
-                          <AvatarFallback>
-                            {profileData.name?.charAt(0)}
-                          </AvatarFallback>
-                        )}
-                      </Avatar>
-                      <div>
-                        <Label htmlFor="avatar">Profile Picture</Label>
-                        <Input
-                          id="avatar"
-                          type="file"
-                          accept="image/*"
-                          onChange={handleAvatarChange}
-                        />
+                        </div>
                       </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="name">Full Name</Label>
+                          <Input
+                            id="name"
+                            value={profileData.name}
+                            onChange={handleProfileChange}
+                            className={
+                              profileErrors.name ? "border-red-500" : ""
+                            }
+                            disabled={isProfileSubmitting}
+                            required
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="email">Email</Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            value={profileData.email}
+                            onChange={handleProfileChange}
+                            className={
+                              profileErrors.email ? "border-red-500" : ""
+                            }
+                            disabled={isProfileSubmitting}
+                            required
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="phone_number">Phone Number</Label>
+                          <Input
+                            id="phone_number"
+                            value={profileData.phone_number}
+                            onChange={handleProfileChange}
+                            disabled={isProfileSubmitting}
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="position">Position</Label>
+                          <Input
+                            id="position"
+                            value={profileData.position}
+                            onChange={handleProfileChange}
+                            disabled={isProfileSubmitting}
+                          />
+                        </div>
+
+                        <div className="space-y-2 col-span-2">
+                          <Label htmlFor="address">Address</Label>
+                          <Input
+                            id="address"
+                            value={profileData.address}
+                            onChange={handleProfileChange}
+                            disabled={isProfileSubmitting}
+                          />
+                        </div>
+                      </div>
+
+                      <Button type="submit" disabled={isProfileSubmitting}>
+                        {isProfileSubmitting ? "Saving..." : "Save Changes"}
+                      </Button>
                     </div>
+                  </form>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-                    <div className="grid grid-cols-2 gap-4">
+            <TabsContent value="security">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Security Settings</CardTitle>
+                  <CardDescription>Update your password</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handlePasswordSubmit}>
+                    <div className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="name">Full Name</Label>
+                        <Label htmlFor="current_password">
+                          Current Password
+                        </Label>
                         <Input
-                          id="name"
-                          value={profileData.name}
-                          onChange={handleProfileChange}
-                          className={profileErrors.name ? "border-red-500" : ""}
-                          disabled={isProfileSubmitting}
-                          required
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={profileData.email}
-                          onChange={handleProfileChange}
+                          id="current_password"
+                          type="password"
+                          value={passwordData.current_password}
+                          onChange={handlePasswordChange}
                           className={
-                            profileErrors.email ? "border-red-500" : ""
+                            passwordErrors.current_password
+                              ? "border-red-500"
+                              : ""
                           }
-                          disabled={isProfileSubmitting}
+                          disabled={isPasswordSubmitting}
                           required
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="phone_number">Phone Number</Label>
+                        <Label htmlFor="new_password">New Password</Label>
                         <Input
-                          id="phone_number"
-                          value={profileData.phone_number}
-                          onChange={handleProfileChange}
-                          disabled={isProfileSubmitting}
+                          id="new_password"
+                          type="password"
+                          value={passwordData.new_password}
+                          onChange={handlePasswordChange}
+                          className={
+                            passwordErrors.new_password ? "border-red-500" : ""
+                          }
+                          disabled={isPasswordSubmitting}
+                          required
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="position">Position</Label>
+                        <Label htmlFor="new_password_confirmation">
+                          Confirm New Password
+                        </Label>
                         <Input
-                          id="position"
-                          value={profileData.position}
-                          onChange={handleProfileChange}
-                          disabled={isProfileSubmitting}
+                          id="new_password_confirmation"
+                          type="password"
+                          value={passwordData.new_password_confirmation}
+                          onChange={handlePasswordChange}
+                          className={
+                            passwordErrors.new_password_confirmation
+                              ? "border-red-500"
+                              : ""
+                          }
+                          disabled={isPasswordSubmitting}
+                          required
                         />
                       </div>
 
-                      <div className="space-y-2 col-span-2">
-                        <Label htmlFor="address">Address</Label>
-                        <Input
-                          id="address"
-                          value={profileData.address}
-                          onChange={handleProfileChange}
-                          disabled={isProfileSubmitting}
-                        />
-                      </div>
+                      <Button type="submit" disabled={isPasswordSubmitting}>
+                        {isPasswordSubmitting
+                          ? "Updating..."
+                          : "Update Password"}
+                      </Button>
                     </div>
-
-                    <Button type="submit" disabled={isProfileSubmitting}>
-                      {isProfileSubmitting ? "Saving..." : "Save Changes"}
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="security">
-            <Card>
-              <CardHeader>
-                <CardTitle>Security Settings</CardTitle>
-                <CardDescription>Update your password</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handlePasswordSubmit}>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="current_password">Current Password</Label>
-                      <Input
-                        id="current_password"
-                        type="password"
-                        value={passwordData.current_password}
-                        onChange={handlePasswordChange}
-                        className={
-                          passwordErrors.current_password
-                            ? "border-red-500"
-                            : ""
-                        }
-                        disabled={isPasswordSubmitting}
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="new_password">New Password</Label>
-                      <Input
-                        id="new_password"
-                        type="password"
-                        value={passwordData.new_password}
-                        onChange={handlePasswordChange}
-                        className={
-                          passwordErrors.new_password ? "border-red-500" : ""
-                        }
-                        disabled={isPasswordSubmitting}
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="new_password_confirmation">
-                        Confirm New Password
-                      </Label>
-                      <Input
-                        id="new_password_confirmation"
-                        type="password"
-                        value={passwordData.new_password_confirmation}
-                        onChange={handlePasswordChange}
-                        className={
-                          passwordErrors.new_password_confirmation
-                            ? "border-red-500"
-                            : ""
-                        }
-                        disabled={isPasswordSubmitting}
-                        required
-                      />
-                    </div>
-
-                    <Button type="submit" disabled={isPasswordSubmitting}>
-                      {isPasswordSubmitting ? "Updating..." : "Update Password"}
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+                  </form>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </SettingsLayout>
     </AdminLayout>
   );
 };
