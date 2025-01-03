@@ -2,6 +2,7 @@ import axiosInstance from "@/api/axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
+import { LogOut } from "lucide-react";
 
 export function LogoutButton() {
   const navigate = useNavigate();
@@ -21,5 +22,10 @@ export function LogoutButton() {
     }
   };
 
-  return <Button onClick={handleLogout}>Logout</Button>;
+  return (
+    <Button variant="ghost" onClick={handleLogout} className="p-0 h-6">
+      <LogOut />
+      Logout
+    </Button>
+  );
 }
