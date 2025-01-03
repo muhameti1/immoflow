@@ -14,6 +14,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import InvitationForm from "./components/InvitationForm";
 import InviteForm from "./pages/Invitations/Index";
 import AcceptInvitation from "./pages/Invitations/Accept";
+import ProfilePage from "./pages/Account/Index";
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
 
             <Route path="/invite" element={<InviteForm />} />
             <Route path="/accept-invite" element={<AcceptInvitation />} />
+            <Route path="/app/settings" element={<ProfilePage />} />
 
             {/* Add other routes here */}
           </Routes>

@@ -26,10 +26,15 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { LogoutButton } from "./LogoutButton";
+import { useAuth } from "@/context/AuthContext";
 
-export function NavUser({ user }) {
+export function NavUser() {
+  const { user } = useAuth();
   const { isMobile } = useSidebar();
 
+  if (!user) {
+    return <p>Loading...</p>;
+  }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -39,9 +44,20 @@ export function NavUser({ user }) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <Avatar className="h-8 w-8 bg-slate-200">
+                {user.avatar ? (
+                  // Show user's avatar if it exists
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                ) : (
+                  // Show RoboHash avatar if user's avatar is null
+                  <AvatarImage
+                    src={`https://robohash.org/${encodeURIComponent(
+                      user.name.split(" ")[0]
+                    )}`}
+                    alt={user.name}
+                  />
+                )}
+                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.name}</span>
