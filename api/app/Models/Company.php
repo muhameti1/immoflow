@@ -17,4 +17,9 @@ class Company extends Model
     {
         return $this->hasMany(Agent::class);
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

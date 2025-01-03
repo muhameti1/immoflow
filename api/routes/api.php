@@ -14,14 +14,6 @@ Route::get('/users', [AuthController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-
-    // Route::middleware('role:admin')->group(function () {
-    //     Route::get('/admin', [AdminController::class, 'index']);
-    // });
-
-    // Route::middleware('permission:view-dashboard')->group(function () {
-    //     Route::get('/dashboard', [DashboardController::class, 'index']);
-    // });
 });
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user()->load('roles');

@@ -25,10 +25,13 @@ class AuthController extends Controller
             'company_name' => 'required|string|max:255|unique:companies,name',
         ]);
 
+        $company = Company::firstOrCreate(['name' => $request->company_name]);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'company_id' => $company->id,
         ]);
 
         $company = Company::create([
