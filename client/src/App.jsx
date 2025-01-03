@@ -11,6 +11,9 @@ import { AuthProvider } from "./context/AuthContext";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import Index from "./pages/properties/Index";
 import { ThemeProvider } from "./components/theme-provider";
+import InvitationForm from "./components/InvitationForm";
+import InviteForm from "./pages/Invitations/Index";
+import AcceptInvitation from "./pages/Invitations/Accept";
 
 function App() {
   return (
@@ -61,6 +64,9 @@ function App() {
               }
             />
             <Route path="/unauthorized" element={<Unauthorized />} />
+
+            <Route path="/invite" element={<InviteForm />} />
+            <Route path="/accept-invite" element={<AcceptInvitation />} />
 
             {/* Add other routes here */}
           </Routes>
