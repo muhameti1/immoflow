@@ -14,6 +14,7 @@ import {
   Map,
   Megaphone,
   PieChart,
+  Settings,
   Settings2,
   SquareTerminal,
   Users,
@@ -95,6 +96,11 @@ const data = {
       title: "Mailings",
       url: "/app/mailings",
       icon: Megaphone,
+    },
+    {
+      title: "Settings",
+      url: "/app/settings",
+      icon: Settings,
     },
   ],
   projects: [
