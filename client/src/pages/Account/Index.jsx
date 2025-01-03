@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { useProfileForm } from "@/hooks/useProfileForm";
+import { usePasswordForm } from "@/hooks/usePasswordForm";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,60 +19,93 @@ import axiosInstance from "@/api/axios";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone_number: "",
-    address: "",
-    position: "",
-    avatar: null,
-    current_password: "",
-    new_password: "",
-    new_password_confirmation: "",
-  });
 
-  useEffect(() => {
-    // Fetch user data
-    axiosInstance.get("/user").then((response) => {
-      setUser(response.data);
-      setFormData({
-        name: response.data.name,
-        email: response.data.email,
-        phone_number: response.data.phone_number || "",
-        address: response.data.address || "",
-        position: response.data.position || "",
-        avatar: response.data.avatar || null,
-      });
-    });
-  }, []);
+  const {
+    formData: profileData,
+    setFormData: setProfileData,
+    errors: profileErrors,
+    setErrors: setProfileErrors,
+    isSubmitting: isProfileSubmitting,
+    setIsSubmitting: setProfileIsSubmitting,
+    validateForm: validateProfileForm,
+  } = useProfileForm(user);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+  const {
+    passwordData,
+    setPasswordData,
+    errors: passwordErrors,
+    setErrors: setPasswordErrors,
+    isSubmitting: isPasswordSubmitting,
+    setIsSubmitting: setPasswordIsSubmitting,
+    validatePasswordForm,
+  } = usePasswordForm();
+
+  const handleProfileChange = (e) => {
+    const { id, value } = e.target;
+    setProfileData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handlePasswordChange = (e) => {
+    const { id, value } = e.target;
+    setPasswordData((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleAvatarChange = (e) => {
-    setFormData({ ...formData, avatar: e.target.files[0] });
+    const file = e.target.files[0];
+    if (file) {
+      setProfileData((prev) => ({ ...prev, avatar: file }));
+    }
   };
-
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axiosInstance.get("/user");
+        setUser(response.data);
+        setProfileData({
+          name: response.data.name || "",
+          email: response.data.email || "",
+          phone_number: response.data.phone_number || "",
+          address: response.data.address || "",
+          position: response.data.position || "",
+          avatar: response.data.avatar || null,
+        });
+      } catch (error) {
+        toast.error("Failed to fetch user data");
+      }
+    };
+    fetchUser();
+  }, []);
+  const handleProfileSubmit = async (e) => {
     e.preventDefault();
+    if (!validateProfileForm()) return;
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("_method", "PUT");
-    formDataToSend.append("name", formData.name);
-    formDataToSend.append("email", formData.email);
-    formDataToSend.append("phone_number", formData.phone_number || "");
-    formDataToSend.append("address", formData.address || "");
-    formDataToSend.append("position", formData.position || "");
+    setProfileIsSubmitting(true);
+    const updateData = new FormData();
 
-    if (formData.avatar instanceof File) {
-      formDataToSend.append("avatar", formData.avatar);
+    // Explicitly append each field
+    updateData.append("name", profileData.name);
+    updateData.append("email", profileData.email);
+
+    // Optional fields
+    if (profileData.phone_number) {
+      updateData.append("phone_number", profileData.phone_number);
+    }
+    if (profileData.address) {
+      updateData.append("address", profileData.address);
+    }
+    if (profileData.position) {
+      updateData.append("position", profileData.position);
+    }
+
+    // Handle avatar separately
+    if (profileData.avatar instanceof File) {
+      updateData.append("avatar", profileData.avatar);
     }
 
     try {
       const response = await axiosInstance.post(
         `/users/${user.id}`,
-        formDataToSend,
+        updateData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -80,49 +115,39 @@ const ProfilePage = () => {
         }
       );
 
-      console.log("Response:", response.data);
       setUser(response.data.user);
       toast.success("Profile updated successfully");
     } catch (error) {
-      console.error("Error:", error.response?.data);
+      console.error("Update failed:", error.response?.data);
+      setProfileErrors(error.response?.data?.errors || {});
       toast.error(error.response?.data?.message || "Failed to update profile");
+    } finally {
+      setProfileIsSubmitting(false);
     }
   };
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
+    if (!validatePasswordForm()) return;
 
-    if (formData.new_password !== formData.new_password_confirmation) {
-      toast.error("New passwords don't match");
-      return;
-    }
-
+    setPasswordIsSubmitting(true);
     try {
-      await axiosInstance.put(`/users/${user.id}/password`, {
-        current_password: formData.current_password,
-        new_password: formData.new_password,
-        new_password_confirmation: formData.new_password_confirmation,
-      });
-
-      setFormData((prev) => ({
-        ...prev,
+      await axiosInstance.put(`/users/${user.id}/password`, passwordData);
+      setPasswordData({
         current_password: "",
         new_password: "",
         new_password_confirmation: "",
-      }));
-
+      });
       toast.success("Password updated successfully");
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.response?.data?.errors?.current_password?.[0] ||
-        "Failed to update password";
-      toast.error(errorMessage);
+      setPasswordErrors(error.response?.data?.errors || {});
+      toast.error(error.response?.data?.message || "Failed to update password");
+    } finally {
+      setPasswordIsSubmitting(false);
     }
   };
 
   if (!user) return <div>Loading...</div>;
-
   return (
     <AdminLayout>
       <div className="container mx-auto p-4 max-w-3xl">
@@ -137,28 +162,34 @@ const ProfilePage = () => {
               <CardHeader>
                 <CardTitle>Profile Settings</CardTitle>
                 <CardDescription>
-                  Manage your profile information and preferences.
+                  Update your profile information
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleProfileSubmit}>
                   <div className="space-y-6">
                     <div className="flex items-center space-x-4">
-                      <Avatar className="h-20 w-20 bg-slate-100">
-                        {user.avatar ? (
+                      <Avatar className="h-20 w-20">
+                        {profileData.avatar ? (
                           <AvatarImage
-                            src={`http://localhost:8000/storage/${user.avatar}`}
-                            alt={user.name}
+                            src={
+                              profileData.avatar instanceof File
+                                ? URL.createObjectURL(profileData.avatar)
+                                : `http://localhost:8000/storage/${profileData.avatar}`
+                            }
+                            alt={profileData.name}
                           />
                         ) : (
-                          <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>
+                            {profileData.name?.charAt(0)}
+                          </AvatarFallback>
                         )}
                       </Avatar>
                       <div>
-                        <Label htmlFor="avatar">Change Avatar</Label>
+                        <Label htmlFor="avatar">Profile Picture</Label>
                         <Input
-                          type="file"
                           id="avatar"
+                          type="file"
                           accept="image/*"
                           onChange={handleAvatarChange}
                         />
@@ -170,8 +201,10 @@ const ProfilePage = () => {
                         <Label htmlFor="name">Full Name</Label>
                         <Input
                           id="name"
-                          value={formData.name}
-                          onChange={handleChange}
+                          value={profileData.name}
+                          onChange={handleProfileChange}
+                          className={profileErrors.name ? "border-red-500" : ""}
+                          disabled={isProfileSubmitting}
                           required
                         />
                       </div>
@@ -181,8 +214,12 @@ const ProfilePage = () => {
                         <Input
                           id="email"
                           type="email"
-                          value={formData.email}
-                          onChange={handleChange}
+                          value={profileData.email}
+                          onChange={handleProfileChange}
+                          className={
+                            profileErrors.email ? "border-red-500" : ""
+                          }
+                          disabled={isProfileSubmitting}
                           required
                         />
                       </div>
@@ -191,17 +228,9 @@ const ProfilePage = () => {
                         <Label htmlFor="phone_number">Phone Number</Label>
                         <Input
                           id="phone_number"
-                          value={formData.phone_number}
-                          onChange={handleChange}
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="address">Address</Label>
-                        <Input
-                          id="address"
-                          value={formData.address}
-                          onChange={handleChange}
+                          value={profileData.phone_number}
+                          onChange={handleProfileChange}
+                          disabled={isProfileSubmitting}
                         />
                       </div>
 
@@ -209,18 +238,32 @@ const ProfilePage = () => {
                         <Label htmlFor="position">Position</Label>
                         <Input
                           id="position"
-                          value={formData.position}
-                          onChange={handleChange}
+                          value={profileData.position}
+                          onChange={handleProfileChange}
+                          disabled={isProfileSubmitting}
+                        />
+                      </div>
+
+                      <div className="space-y-2 col-span-2">
+                        <Label htmlFor="address">Address</Label>
+                        <Input
+                          id="address"
+                          value={profileData.address}
+                          onChange={handleProfileChange}
+                          disabled={isProfileSubmitting}
                         />
                       </div>
                     </div>
 
-                    <Button type="submit">Save Changes</Button>
+                    <Button type="submit" disabled={isProfileSubmitting}>
+                      {isProfileSubmitting ? "Saving..." : "Save Changes"}
+                    </Button>
                   </div>
                 </form>
               </CardContent>
             </Card>
           </TabsContent>
+
           <TabsContent value="security">
             <Card>
               <CardHeader>
@@ -235,28 +278,29 @@ const ProfilePage = () => {
                       <Input
                         id="current_password"
                         type="password"
-                        value={formData.current_password}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            current_password: e.target.value,
-                          })
+                        value={passwordData.current_password}
+                        onChange={handlePasswordChange}
+                        className={
+                          passwordErrors.current_password
+                            ? "border-red-500"
+                            : ""
                         }
+                        disabled={isPasswordSubmitting}
                         required
                       />
                     </div>
+
                     <div className="space-y-2">
                       <Label htmlFor="new_password">New Password</Label>
                       <Input
                         id="new_password"
                         type="password"
-                        value={formData.new_password}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            new_password: e.target.value,
-                          })
+                        value={passwordData.new_password}
+                        onChange={handlePasswordChange}
+                        className={
+                          passwordErrors.new_password ? "border-red-500" : ""
                         }
+                        disabled={isPasswordSubmitting}
                         required
                       />
                     </div>
@@ -268,18 +312,21 @@ const ProfilePage = () => {
                       <Input
                         id="new_password_confirmation"
                         type="password"
-                        value={formData.new_password_confirmation}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            new_password_confirmation: e.target.value,
-                          })
+                        value={passwordData.new_password_confirmation}
+                        onChange={handlePasswordChange}
+                        className={
+                          passwordErrors.new_password_confirmation
+                            ? "border-red-500"
+                            : ""
                         }
+                        disabled={isPasswordSubmitting}
                         required
                       />
                     </div>
 
-                    <Button type="submit">Update Password</Button>
+                    <Button type="submit" disabled={isPasswordSubmitting}>
+                      {isPasswordSubmitting ? "Updating..." : "Update Password"}
+                    </Button>
                   </div>
                 </form>
               </CardContent>
