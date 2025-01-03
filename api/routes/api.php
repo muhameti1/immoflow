@@ -18,6 +18,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/invitations', [InvitationController::class, 'invite']);
     Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::put('/users/{id}/password', [UserController::class, 'updatePassword']);
 });
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user()->load('roles');

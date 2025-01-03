@@ -24,6 +24,9 @@ const ProfilePage = () => {
     address: "",
     position: "",
     avatar: null,
+    current_password: "",
+    new_password: "",
+    new_password_confirmation: "",
   });
 
   useEffect(() => {
@@ -86,6 +89,38 @@ const ProfilePage = () => {
     }
   };
 
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+
+    if (formData.new_password !== formData.new_password_confirmation) {
+      toast.error("New passwords don't match");
+      return;
+    }
+
+    try {
+      await axiosInstance.put(`/users/${user.id}/password`, {
+        current_password: formData.current_password,
+        new_password: formData.new_password,
+        new_password_confirmation: formData.new_password_confirmation,
+      });
+
+      setFormData((prev) => ({
+        ...prev,
+        current_password: "",
+        new_password: "",
+        new_password_confirmation: "",
+      }));
+
+      toast.success("Password updated successfully");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.errors?.current_password?.[0] ||
+        "Failed to update password";
+      toast.error(errorMessage);
+    }
+  };
+
   if (!user) return <div>Loading...</div>;
 
   return (
@@ -112,7 +147,7 @@ const ProfilePage = () => {
                       <Avatar className="h-20 w-20 bg-slate-100">
                         {user.avatar ? (
                           <AvatarImage
-                            src={`/storage/${user.avatar}`}
+                            src={`http://localhost:8000/storage/${user.avatar}`}
                             alt={user.name}
                           />
                         ) : (
@@ -181,6 +216,70 @@ const ProfilePage = () => {
                     </div>
 
                     <Button type="submit">Save Changes</Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="security">
+            <Card>
+              <CardHeader>
+                <CardTitle>Security Settings</CardTitle>
+                <CardDescription>Update your password</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handlePasswordSubmit}>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="current_password">Current Password</Label>
+                      <Input
+                        id="current_password"
+                        type="password"
+                        value={formData.current_password}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            current_password: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="new_password">New Password</Label>
+                      <Input
+                        id="new_password"
+                        type="password"
+                        value={formData.new_password}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            new_password: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="new_password_confirmation">
+                        Confirm New Password
+                      </Label>
+                      <Input
+                        id="new_password_confirmation"
+                        type="password"
+                        value={formData.new_password_confirmation}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            new_password_confirmation: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </div>
+
+                    <Button type="submit">Update Password</Button>
                   </div>
                 </form>
               </CardContent>

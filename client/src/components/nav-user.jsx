@@ -46,10 +46,11 @@ export function NavUser() {
             >
               <Avatar className="h-8 w-8 bg-slate-200">
                 {user.avatar ? (
-                  // Show user's avatar if it exists
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage
+                    src={`http://localhost:8000/storage/${user.avatar}`}
+                    alt={user.name}
+                  />
                 ) : (
-                  // Show RoboHash avatar if user's avatar is null
                   <AvatarImage
                     src={`https://robohash.org/${encodeURIComponent(
                       user.name.split(" ")[0]
@@ -74,9 +75,21 @@ export function NavUser() {
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <Avatar className="h-8 w-8 bg-slate-200">
+                  {user.avatar ? (
+                    <AvatarImage
+                      src={`http://localhost:8000/storage/${user.avatar}`}
+                      alt={user.name}
+                    />
+                  ) : (
+                    <AvatarImage
+                      src={`https://robohash.org/${encodeURIComponent(
+                        user.name.split(" ")[0]
+                      )}`}
+                      alt={user.name}
+                    />
+                  )}
+                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user.name}</span>
@@ -88,7 +101,7 @@ export function NavUser() {
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
-                Upgrade to Pro
+                Ai Assistant
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
