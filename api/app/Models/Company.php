@@ -9,6 +9,9 @@ class Company extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'social_links' => 'array',
+    ];
     protected $fillable = [
         'name',
         'email',
