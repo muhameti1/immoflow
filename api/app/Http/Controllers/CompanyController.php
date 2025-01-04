@@ -50,10 +50,11 @@ class CompanyController extends Controller
                 'location' => 'nullable|string|max:255',
                 'social_links' => 'nullable|array',
                 'social_links.*' => 'string',
-                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'color_brand_company' => 'nullable|string|max:255'
             ]);
 
-            $data = $request->only(['name', 'email', 'bio', 'location', 'social_links']);
+            $data = $request->only(['name', 'email', 'bio', 'location', 'social_links', 'color_brand_company']);
 
             if ($request->hasFile('logo')) {
                 if ($company->logo) {

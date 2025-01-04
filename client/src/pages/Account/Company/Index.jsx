@@ -28,6 +28,7 @@ const CompanyProfile = () => {
     location: "",
     social_links: [],
     logo: null,
+    color_brand_company: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -45,6 +46,7 @@ const CompanyProfile = () => {
             ? response.data.social_links
             : [], // Ensure it's an array
           logo: response.data.logo || null,
+          color_brand_company: response.data.color_brand_company || "",
         });
       } catch (error) {
         toast.error("Failed to fetch company data");
@@ -223,6 +225,23 @@ const CompanyProfile = () => {
                 placeholder="123 Main St, City, Country"
               />
             </div>
+            <div className="space-y-2 col-span-2">
+              <Label htmlFor="color_brand_company">Brand Colors</Label>
+              <Input
+                type="color"
+                id="color_brand_company"
+                value={formData.color_brand_company}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    color_brand_company: e.target.value,
+                  })
+                }
+                disabled={isSubmitting}
+                className=" h-10 border rounded-md cursor-pointer"
+              />
+            </div>
+
             <div className="space-y-2 col-span-2">
               <Label htmlFor="logo">Logo</Label>
               <Input
