@@ -11,6 +11,12 @@ class Company extends Model
 
     protected $fillable = [
         'name',
+        'email',
+        'location',
+        'bio',
+        'social_links',
+        'color_brand_company',
+        'logo',
     ];
 
     public function agents()

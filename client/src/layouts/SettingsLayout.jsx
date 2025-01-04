@@ -1,26 +1,42 @@
-import { SidebarNav } from "@/components/SettingsSidebarNav";
+// import { SidebarNav } from "@/components/SettingsSidebarNav";
+import { NavMain } from "@/components/nav-main";
+import { NavMainSettings } from "@/components/SettingsSidebarNav";
 import { Separator } from "@/components/ui/separator";
+import {
+  AlarmClockPlusIcon,
+  Bell,
+  Bolt,
+  Palette,
+  SquareMousePointer,
+  User,
+  Wrench,
+} from "lucide-react";
 
 const sidebarNavItems = [
   {
     title: "Profile",
-    href: "/examples/forms",
+    url: "/app/settings",
+    icon: User,
   },
   {
-    title: "Account",
-    href: "/examples/forms/account",
+    title: "Company",
+    url: "/app/settings/company",
+    icon: Bolt,
   },
   {
     title: "Appearance",
-    href: "/examples/forms/appearance",
+    url: "/app/settings/appearance",
+    icon: Palette,
   },
   {
     title: "Notifications",
-    href: "/examples/forms/notifications",
+    url: "/app/settings/notifications",
+    icon: Bell,
   },
   {
     title: "Display",
-    href: "/examples/forms/display",
+    url: "/app/settings/display",
+    icon: SquareMousePointer,
   },
 ];
 
@@ -53,7 +69,7 @@ export default function SettingsLayout({ children }) {
         <Separator className="my-6" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
           <aside className="-mx-4 lg:w-1/5">
-            <SidebarNav items={sidebarNavItems} />
+            <NavMainSettings items={sidebarNavItems} />
           </aside>
           <div className="flex-1 lg:max-w-2xl">{children}</div>
         </div>

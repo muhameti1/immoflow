@@ -15,6 +15,7 @@ import InvitationForm from "./components/InvitationForm";
 import InviteForm from "./pages/Invitations/Index";
 import AcceptInvitation from "./pages/Invitations/Accept";
 import ProfilePage from "./pages/Account/Index";
+import CompanyProfileForm from "./pages/Account/Company/Index";
 
 function App() {
   return (
@@ -69,6 +70,10 @@ function App() {
             <Route path="/invite" element={<InviteForm />} />
             <Route path="/accept-invite" element={<AcceptInvitation />} />
             <Route path="/app/settings" element={<ProfilePage />} />
+            <Route
+              path="/app/settings/company"
+              element={<CompanyProfileForm />}
+            />
 
             {/* Add other routes here */}
           </Routes>

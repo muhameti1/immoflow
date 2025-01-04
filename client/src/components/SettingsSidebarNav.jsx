@@ -1,34 +1,52 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils"; // Ensure you have a similar utility or replace it
-import { buttonVariants } from "./ui/button";
+import {
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+} from "@/components/ui/sidebar";
+import { useLocation } from "react-router-dom";
 
-export function SidebarNav({ className, items, ...props }) {
+export function NavMainSettings({ items }) {
   const location = useLocation();
 
+  const isActive = (url) => {
+    return location.pathname === url;
+  };
+
   return (
-    <nav
-      className={cn(
-        "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1",
-        className
-      )}
-      {...props}
-    >
-      {items.map((item) => (
-        <Link
-          key={item.href}
-          to={item.href}
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            location.pathname === item.href
-              ? "bg-muted hover:bg-muted"
-              : "hover:bg-transparent hover:underline",
-            "justify-start"
-          )}
-        >
-          {item.title}
-        </Link>
-      ))}
-    </nav>
+    <SidebarGroup>
+      <SidebarMenu>
+        {items.map((item) => (
+          <SidebarMenuItem key={item.title}>
+            <SidebarMenuButton
+              tooltip={item.title}
+              className={
+                item.url && isActive(item.url)
+                  ? "bg-sidebar-accent text-black dark:text-white"
+                  : ""
+              }
+            >
+              {item.icon && <item.icon />}
+              <a href={item.url}>
+                <span>{item.title}</span>
+              </a>
+            </SidebarMenuButton>
+            {item.items?.map((subItem) => (
+              <SidebarMenuItem key={subItem.title}>
+                <SidebarMenuButton
+                  tooltip={subItem.title}
+                  className={isActive(subItem.url) ? "bg-sidebar-border" : ""}
+                >
+                  <a href={subItem.url}>
+                    <span>{subItem.title}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenuItem>
+        ))}
+      </SidebarMenu>
+    </SidebarGroup>
   );
 }
