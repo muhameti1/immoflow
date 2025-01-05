@@ -140,26 +140,44 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+        try {
+            $validated = $request->validate([
+                'email' => 'required|string|email',
+                'password' => 'required|string',
             ]);
+
+            $user = User::where('email', $validated['email'])->first();
+
+            if (!$user || !Hash::check($validated['password'], $user->password)) {
+                throw ValidationException::withMessages([
+                    'email' => ['The provided credentials are incorrect.'],
+                ]);
+            }
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            Log::info('User logged in successfully', ['user_id' => $user->id]);
+
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'user' => $user->load(['roles', 'company'])
+            ]);
+        } catch (ValidationException $e) {
+            Log::warning('Login failed - validation error', [
+                'email' => $request->email,
+                'errors' => $e->errors()
+            ]);
+            throw $e;
+        } catch (\Exception $e) {
+            Log::error('Login failed - server error', [
+                'error' => $e->getMessage()
+            ]);
+            return response()->json([
+                'message' => 'Login failed',
+                'errors' => ['email' => ['An unexpected error occurred.']]
+            ], 500);
         }
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'user' => $user->load('roles')
-        ]);
     }
 
     public function logout(Request $request)

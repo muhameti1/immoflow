@@ -18,7 +18,7 @@ class Property extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->id = Str::random(10);
+            $model->id = Str::random(8);
         });
     }
 
