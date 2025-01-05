@@ -14,10 +14,11 @@ import { ThemeProvider } from "./components/theme-provider";
 import InvitationForm from "./components/InvitationForm";
 import InviteForm from "./pages/Invitations/Index";
 import AcceptInvitation from "./pages/Invitations/Accept";
-import ProfilePage from "./pages/Account/Index";
-import CompanyProfileForm from "./pages/Account/Company/Index";
-import { AppearanceForm } from "./pages/Account/Appereance/Index";
-import TeamPage from "./pages/Account/Team/Index";
+import CompanyProfileForm from "./pages/Settings/Company/Index";
+import { AppearanceForm } from "./pages/Settings/Appereance/Index";
+import TeamPage from "./pages/Settings/Team/Index";
+import TeamManagementPage from "./pages/Settings/Team/Index";
+import ProfilePage from "./pages/Settings/Profile/ProfilePage";
 
 function App() {
   return (
@@ -80,7 +81,7 @@ function App() {
               path="/app/settings/appearance"
               element={<AppearanceForm />}
             />
-            <Route path="/app/settings/team" element={<TeamPage />} />
+            <Route path="/app/settings/team" element={<TeamManagementPage />} />
 
             {/* Add other routes here */}
           </Routes>
