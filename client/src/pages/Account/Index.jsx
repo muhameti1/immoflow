@@ -152,7 +152,7 @@ const ProfilePage = () => {
   return (
     <AdminLayout>
       <SettingsLayout>
-        <div className="container mx-auto p-4 max-w-3xl">
+        <div className="container  p-4 max-w-2xl">
           <Tabs defaultValue="profile" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="profile">Profile</TabsTrigger>

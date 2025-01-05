@@ -16,6 +16,8 @@ import InviteForm from "./pages/Invitations/Index";
 import AcceptInvitation from "./pages/Invitations/Accept";
 import ProfilePage from "./pages/Account/Index";
 import CompanyProfileForm from "./pages/Account/Company/Index";
+import { AppearanceForm } from "./pages/Account/Appereance/Index";
+import TeamPage from "./pages/Account/Team/Index";
 
 function App() {
   return (
@@ -74,6 +76,11 @@ function App() {
               path="/app/settings/company"
               element={<CompanyProfileForm />}
             />
+            <Route
+              path="/app/settings/appearance"
+              element={<AppearanceForm />}
+            />
+            <Route path="/app/settings/team" element={<TeamPage />} />
 
             {/* Add other routes here */}
           </Routes>

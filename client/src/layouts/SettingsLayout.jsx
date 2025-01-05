@@ -9,6 +9,7 @@ import {
   Palette,
   SquareMousePointer,
   User,
+  Users,
   Wrench,
 } from "lucide-react";
 
@@ -29,9 +30,9 @@ const sidebarNavItems = [
     icon: Palette,
   },
   {
-    title: "Notifications",
-    url: "/app/settings/notifications",
-    icon: Bell,
+    title: "Team",
+    url: "/app/settings/team",
+    icon: Users,
   },
   {
     title: "Display",
@@ -71,7 +72,7 @@ export default function SettingsLayout({ children }) {
           <aside className="-mx-4 lg:w-1/5">
             <NavMainSettings items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:max-w-2xl">{children}</div>
+          <div className="flex-1 ">{children}</div>
         </div>
       </div>
     </>

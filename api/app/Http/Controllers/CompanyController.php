@@ -81,4 +81,29 @@ class CompanyController extends Controller
             ], 422);
         }
     }
+
+    public function users(Request $request)
+    {
+        try {
+            $company = $request->user()->company;
+
+            if (!$company) {
+                return response()->json([
+                    'message' => 'Company not found'
+                ], 404);
+            }
+
+            $users = $company->users()->with('roles')->get();
+
+            return response()->json($users);
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch company users', [
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'message' => 'Failed to fetch company users'
+            ], 500);
+        }
+    }
 }

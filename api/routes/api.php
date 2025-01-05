@@ -24,6 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/company-profile', [CompanyController::class, 'update']);
     // Alternative for file upload
     Route::post('/company-profile', [CompanyController::class, 'update']);
+    Route::get('/company/users', action: [CompanyController::class, 'users']);
 });
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user()->load('roles');

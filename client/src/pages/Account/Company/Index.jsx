@@ -17,7 +17,9 @@ const CompanyProfilePage = () => {
           title="Company Profile"
           desc="Update your company details"
         />
-        <CompanyProfileForm initialData={company} />
+        <div className="lg:max-w-2xl">
+          <CompanyProfileForm initialData={company} />
+        </div>
       </SettingsLayout>
     </AdminLayout>
   );
