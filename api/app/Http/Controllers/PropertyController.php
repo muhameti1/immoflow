@@ -269,26 +269,26 @@ class PropertyController extends Controller
             }
 
             if ($request->has('additional')) {
-                if ($property->additionals()->exists()) {
-                    $property->additionals()->first()->update($request->input('additional'));
+                if ($property->additionalInformation()->exists()) {
+                    $property->additionalInformation()->first()->update($request->input('additional'));
                 } else {
-                    $property->additionals()->create($request->input('additional'));
+                    $property->additionalInformation()->create($request->input('additional'));
                 }
             }
 
             if ($request->has('equipment')) {
-                if ($property->equipments()->exists()) {
-                    $property->equipments()->first()->update($request->input('equipment'));
+                if ($property->equipment()->exists()) {
+                    $property->equipment()->first()->update($request->input('equipment'));
                 } else {
-                    $property->equipments()->create($request->input('equipment'));
+                    $property->equipment()->create($request->input('equipment'));
                 }
             }
 
             if ($request->has('address')) {
-                if ($property->addresses()->exists()) {
-                    $property->addresses()->first()->update($request->input('address'));
+                if ($property->address()->exists()) {
+                    $property->address()->first()->update($request->input('address'));
                 } else {
-                    $property->addresses()->create($request->input('address'));
+                    $property->address()->create($request->input('address'));
                 }
             }
 
