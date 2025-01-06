@@ -40,4 +40,29 @@ class Property extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function prices()
+    {
+        return $this->hasMany(PropertyPrice::class);
+    }
+
+    public function areas()
+    {
+        return $this->hasOne(PropertyArea::class);
+    }
+
+    public function additionalInformation()
+    {
+        return $this->hasOne(PropertyAdditionalInformation::class);
+    }
+
+    public function equipment()
+    {
+        return $this->hasOne(PropertyEquipment::class);
+    }
+
+    public function address()
+    {
+        return $this->hasOne(PropertyAddress::class);
+    }
 }
