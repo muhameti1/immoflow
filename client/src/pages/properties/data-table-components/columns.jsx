@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 export const columns = [
   {
@@ -20,17 +21,24 @@ export const columns = [
     cell: ({ row }) => {
       const status = row.getValue("status");
       return (
-        <div
+        <Badge
           className={`capitalize ${
             status === "active"
-              ? "text-green-600"
+              ? "bg-green-100 rounded-full"
               : status === "inactive"
-              ? "text-red-600"
-              : "text-gray-600"
+              ? "bg-red-600 border-none rounded-full text-white"
+              : "text-gray-600 rounded-full"
           }`}
+          variant={
+            status === "active"
+              ? "secondary"
+              : status === "inactive"
+              ? "outline"
+              : ""
+          }
         >
           {status}
-        </div>
+        </Badge>
       );
     },
   },
