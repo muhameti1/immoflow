@@ -65,4 +65,9 @@ class Property extends Model
     {
         return $this->hasOne(PropertyAddress::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(PropertyImage::class);
+    }
 }

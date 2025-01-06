@@ -6,6 +6,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\PropertyImageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/company-profile', [CompanyController::class, 'update']);
     Route::get('/company/users', action: [CompanyController::class, 'users']);
     Route::apiResource('properties', PropertyController::class);
+    Route::post('/properties/{property}/images', [PropertyImageController::class, 'store']);
+    Route::delete('/properties/{property}/images/{image}', [PropertyImageController::class, 'destroy']);
+    Route::put('/properties/{property}/images/{image}/thumbnail', [PropertyImageController::class, 'setThumbnail']);
 });
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user()->load('roles');
