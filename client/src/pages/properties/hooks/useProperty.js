@@ -1,49 +1,97 @@
 // src/hooks/useProperty.js
-import axiosInstance from "@/api/axios";
 import { useState } from "react";
+import axiosInstance from "@/api/axios";
 import { toast } from "sonner";
 
-export const useProperty = () => {
+export function useProperty() {
   const [loading, setLoading] = useState(false);
 
-  const createProperty = async (propertyData) => {
+  const createProperty = async (data) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.post("/properties", propertyData);
-      toast.success("Property created successfully");
-      return response.data;
+      // Replace with your API call
+      const response = await axiosInstance.post("/properties", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create property");
+      }
+
+      const result = await response.json();
+      toast({
+        title: "Success",
+        description: "Property created successfully",
+      });
+      return result;
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to create property");
+      toast({
+        title: "Error",
+        description: "Failed to create property",
+        variant: "destructive",
+      });
       throw error;
     } finally {
       setLoading(false);
     }
   };
 
-  const updateProperty = async (id, propertyData) => {
+  const updateProperty = async (id, data) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.put(
-        `/properties/${id}`,
-        propertyData
-      );
-      toast.success("Property updated successfully");
-      return response.data;
+      // Replace with your API call
+      const response = await axiosInstance.put(`/properties/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update property");
+      }
+
+      const result = await response.json();
+      toast({
+        title: "Success",
+        description: "Property updated successfully",
+      });
+      return result;
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to update property");
+      toast({
+        title: "Error",
+        description: "Failed to update property",
+        variant: "destructive",
+      });
       throw error;
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteProperty = async (id) => {
+  const getProperty = async (id) => {
     setLoading(true);
     try {
-      await axiosInstance.delete(`/properties/${id}`);
-      toast.success("Property deleted successfully");
+      // Replace with your API call
+      const response = await axiosInstance.get(`/properties/${id}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch property");
+      }
+
+      const result = await response.json();
+      return result;
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to delete property");
+      toast({
+        title: "Error",
+        description: "Failed to fetch property",
+        variant: "destructive",
+      });
       throw error;
     } finally {
       setLoading(false);
@@ -54,6 +102,6 @@ export const useProperty = () => {
     loading,
     createProperty,
     updateProperty,
-    deleteProperty,
+    getProperty,
   };
-};
+}

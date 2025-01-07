@@ -1,3 +1,11 @@
+// src/components/properties/sections/PropertyAdditionalInfo.jsx
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -6,17 +14,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 
-export function PropertyAdditionalInfo({ form }) {
+export default function PropertyAdditionalInfo({ form }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <FormField
         control={form.control}
         name="additional.year_built"
@@ -26,10 +27,12 @@ export function PropertyAdditionalInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="Year"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) =>
+                  field.onChange(
+                    e.target.value ? parseInt(e.target.value) : null
+                  )
+                }
               />
             </FormControl>
             <FormMessage />
@@ -46,10 +49,12 @@ export function PropertyAdditionalInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="Year"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) =>
+                  field.onChange(
+                    e.target.value ? parseInt(e.target.value) : null
+                  )
+                }
               />
             </FormControl>
             <FormMessage />
@@ -66,10 +71,12 @@ export function PropertyAdditionalInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="0"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) =>
+                  field.onChange(
+                    e.target.value ? parseInt(e.target.value) : null
+                  )
+                }
               />
             </FormControl>
             <FormMessage />
@@ -84,7 +91,7 @@ export function PropertyAdditionalInfo({ form }) {
           <FormItem>
             <FormLabel>Floor Number</FormLabel>
             <FormControl>
-              <Input placeholder="Floor number" {...field} />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -100,10 +107,12 @@ export function PropertyAdditionalInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="0"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) =>
+                  field.onChange(
+                    e.target.value ? parseInt(e.target.value) : null
+                  )
+                }
               />
             </FormControl>
             <FormMessage />
@@ -120,30 +129,12 @@ export function PropertyAdditionalInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="0"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="additional.parking_spaces"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Parking Spaces</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                placeholder="0"
-                {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) =>
+                  field.onChange(
+                    e.target.value ? parseInt(e.target.value) : null
+                  )
+                }
               />
             </FormControl>
             <FormMessage />
@@ -157,10 +148,10 @@ export function PropertyAdditionalInfo({ form }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Energy Rating</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select rating" />
+                  <SelectValue placeholder="Select energy rating" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -184,42 +175,18 @@ export function PropertyAdditionalInfo({ form }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Heating Type</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
+                  <SelectValue placeholder="Select heating type" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                <SelectItem value="central">Central Heating</SelectItem>
-                <SelectItem value="floor">Floor Heating</SelectItem>
-                <SelectItem value="gas">Gas Heating</SelectItem>
-                <SelectItem value="electric">Electric Heating</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="additional.construction_type"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Construction Type</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="solid">Solid Construction</SelectItem>
-                <SelectItem value="wooden">Wooden Construction</SelectItem>
-                <SelectItem value="prefabricated">Prefabricated</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+                <SelectItem value="gas">Gas</SelectItem>
+                <SelectItem value="oil">Oil</SelectItem>
+                <SelectItem value="electric">Electric</SelectItem>
+                <SelectItem value="district">District Heating</SelectItem>
+                <SelectItem value="heat_pump">Heat Pump</SelectItem>
               </SelectContent>
             </Select>
             <FormMessage />
@@ -233,7 +200,7 @@ export function PropertyAdditionalInfo({ form }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Building Condition</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="Select condition" />
@@ -241,8 +208,9 @@ export function PropertyAdditionalInfo({ form }) {
               </FormControl>
               <SelectContent>
                 <SelectItem value="new">New</SelectItem>
-                <SelectItem value="good">Good</SelectItem>
+                <SelectItem value="first_occupancy">First Occupancy</SelectItem>
                 <SelectItem value="renovated">Renovated</SelectItem>
+                <SelectItem value="maintained">Well Maintained</SelectItem>
                 <SelectItem value="needs_renovation">
                   Needs Renovation
                 </SelectItem>
@@ -252,46 +220,6 @@ export function PropertyAdditionalInfo({ form }) {
           </FormItem>
         )}
       />
-
-      <FormField
-        control={form.control}
-        name="additional.last_modernization"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Last Modernization</FormLabel>
-            <FormControl>
-              <Input placeholder="Last modernization" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="additional.interior_quality"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Interior Quality</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select quality" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="luxury">Luxury</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="normal">Normal</SelectItem>
-                <SelectItem value="simple">Simple</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
     </div>
   );
 }
-
-export default PropertyAdditionalInfo;
