@@ -1,15 +1,16 @@
-import { Input } from "@/components/ui/input";
+// src/components/properties/sections/PropertyAreaInfo.jsx
 import {
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 export function PropertyAreaInfo({ form }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <FormField
         control={form.control}
         name="area.total_area"
@@ -19,10 +20,8 @@ export function PropertyAreaInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="0"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) => field.onChange(parseFloat(e.target.value))}
               />
             </FormControl>
             <FormMessage />
@@ -39,10 +38,8 @@ export function PropertyAreaInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="0"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) => field.onChange(parseFloat(e.target.value))}
               />
             </FormControl>
             <FormMessage />
@@ -59,10 +56,8 @@ export function PropertyAreaInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="0"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) => field.onChange(parseFloat(e.target.value))}
               />
             </FormControl>
             <FormMessage />
@@ -79,30 +74,8 @@ export function PropertyAreaInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="0"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="area.storage_area"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Storage Area (m²)</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                placeholder="0"
-                {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) => field.onChange(parseFloat(e.target.value))}
               />
             </FormControl>
             <FormMessage />
@@ -119,10 +92,8 @@ export function PropertyAreaInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="0"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) => field.onChange(parseFloat(e.target.value))}
               />
             </FormControl>
             <FormMessage />
@@ -139,90 +110,8 @@ export function PropertyAreaInfo({ form }) {
             <FormControl>
               <Input
                 type="number"
-                placeholder="0"
                 {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="area.garden_area"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Garden Area (m²)</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                placeholder="0"
-                {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="area.basement_area"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Basement Area (m²)</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                placeholder="0"
-                {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="area.garage_area"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Garage Area (m²)</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                placeholder="0"
-                {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="area.parking_area"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Parking Area (m²)</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                placeholder="0"
-                {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value || ""}
+                onChange={(e) => field.onChange(parseFloat(e.target.value))}
               />
             </FormControl>
             <FormMessage />

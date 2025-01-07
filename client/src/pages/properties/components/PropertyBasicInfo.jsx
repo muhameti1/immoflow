@@ -1,3 +1,10 @@
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -7,43 +14,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 
 export function PropertyBasicInfo({ form }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <FormField
         control={form.control}
         name="title"
         render={({ field }) => (
-          <FormItem className="col-span-2">
-            <FormLabel>Title</FormLabel>
+          <FormItem>
+            <FormLabel>Title*</FormLabel>
             <FormControl>
-              <Input placeholder="Property title" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="description"
-        render={({ field }) => (
-          <FormItem className="col-span-2">
-            <FormLabel>Description</FormLabel>
-            <FormControl>
-              <Textarea
-                placeholder="Describe the property"
-                className="resize-none"
-                {...field}
-              />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -80,19 +62,9 @@ export function PropertyBasicInfo({ form }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Category</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="residential">Residential</SelectItem>
-                <SelectItem value="commercial">Commercial</SelectItem>
-                <SelectItem value="industrial">Industrial</SelectItem>
-                <SelectItem value="land">Land</SelectItem>
-              </SelectContent>
-            </Select>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}
@@ -103,39 +75,30 @@ export function PropertyBasicInfo({ form }) {
         name="object_type"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Property Type</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select property type" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="apartment">Apartment</SelectItem>
-                <SelectItem value="house">House</SelectItem>
-                <SelectItem value="villa">Villa</SelectItem>
-                <SelectItem value="office">Office</SelectItem>
-                <SelectItem value="retail">Retail</SelectItem>
-                <SelectItem value="warehouse">Warehouse</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="warnings"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Warnings</FormLabel>
+            <FormLabel>Object Type</FormLabel>
             <FormControl>
-              <Input placeholder="Warnings" {...field} />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
+
+      <div className="col-span-full">
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea {...field} rows={4} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
 
       <FormField
         control={form.control}
@@ -144,7 +107,7 @@ export function PropertyBasicInfo({ form }) {
           <FormItem>
             <FormLabel>Order Number</FormLabel>
             <FormControl>
-              <Input placeholder="Order number" {...field} />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -158,30 +121,28 @@ export function PropertyBasicInfo({ form }) {
           <FormItem>
             <FormLabel>Unit Number</FormLabel>
             <FormControl>
-              <Input placeholder="Unit number" {...field} />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      <FormField
-        control={form.control}
-        name="internal_note"
-        render={({ field }) => (
-          <FormItem className="col-span-2">
-            <FormLabel>Internal Notes</FormLabel>
-            <FormControl>
-              <Textarea
-                placeholder="Add internal notes"
-                className="resize-none"
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <div className="col-span-full">
+        <FormField
+          control={form.control}
+          name="internal_note"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Internal Note</FormLabel>
+              <FormControl>
+                <Textarea {...field} rows={3} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
     </div>
   );
 }
