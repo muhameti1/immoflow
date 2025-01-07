@@ -1,34 +1,21 @@
-// src/components/properties/PropertyForm.jsx
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PropertyBasicInfo } from "./PropertyBasicInfo";
-
-import { useProperty } from "../hooks/useProperty";
-import { propertySchema } from "../schema/propertySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Form } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { propertySchema } from "../schema/propertySchema";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { PropertyBasicInfo } from "./PropertyBasicInfo";
 import { PropertyPriceInfo } from "./PropertyPriceInfo";
 import { PropertyAreaInfo } from "./PropertyAreaInfo";
-import PropertyAdditionalInfo from "./PropertyAdditionalInfo";
 import PropertyEquipmentInfo from "./PropertyEquipmentInfo";
 import PropertyAddressInfo from "./PropertyAddressInfo";
-import AdminLayout from "@/layouts/AdminLayout";
-import { useEffect } from "react";
+import PropertyAdditionalInfo from "./PropertyAdditionalInfo";
 
-export function PropertyForm({ property, onSuccess }) {
-  const { createProperty, updateProperty, loading } = useProperty();
-  const isEditing = !!property;
-
+export function PropertyForm({
+  property,
+  onSubmit: submitHandler,
+  isEditing = false,
+}) {
   const form = useForm({
     resolver: zodResolver(propertySchema),
     defaultValues: property || {
@@ -50,20 +37,10 @@ export function PropertyForm({ property, onSuccess }) {
     },
   });
 
-  useEffect(() => {
-    if (property) {
-      form.reset(property);
-    }
-  }, [property, form]);
-
-  const onSubmit = async (data) => {
+  const handleSubmit = async (data) => {
+    console.log("Submitting form data:", data);
     try {
-      if (isEditing) {
-        await updateProperty(property.id, data);
-      } else {
-        await createProperty(data);
-      }
-      onSuccess?.();
+      await submitHandler(data);
     } catch (error) {
       console.error("Form submission error:", error);
     }
@@ -71,7 +48,7 @@ export function PropertyForm({ property, onSuccess }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <Card>
@@ -123,12 +100,8 @@ export function PropertyForm({ property, onSuccess }) {
           </div>
         </div>
 
-        <Button type="submit" disabled={loading}>
-          {loading
-            ? "Saving..."
-            : isEditing
-            ? "Update Property"
-            : "Create Property"}
+        <Button type="submit" className="mt-6">
+          {isEditing ? "Update Property" : "Create Property"}
         </Button>
       </form>
     </Form>

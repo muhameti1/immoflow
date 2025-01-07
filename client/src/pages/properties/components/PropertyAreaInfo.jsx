@@ -8,8 +8,6 @@ import {
 } from "@/components/ui/form";
 
 export function PropertyAreaInfo({ form }) {
-  console.log("Area values:", form.getValues("area"));
-
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <FormField
