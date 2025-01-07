@@ -153,7 +153,13 @@ class PropertyController extends Controller
 
     public function show($id)
     {
-        $property = Property::findOrFail($id);
+        $property = Property::with([
+            'prices',
+            'areas',
+            'additionalInformation',
+            'equipment',
+            'address'
+        ])->findOrFail($id);
 
         return response()->json($property);
     }

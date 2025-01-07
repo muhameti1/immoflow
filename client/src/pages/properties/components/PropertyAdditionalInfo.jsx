@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/form";
 
 export function PropertyAdditionalInfo({ form }) {
+  console.log("Additional values:", form.getValues("additional"));
+
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <FormField

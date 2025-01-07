@@ -20,6 +20,7 @@ import TeamPage from "./pages/Settings/Team/Index";
 import TeamManagementPage from "./pages/Settings/Team/Index";
 import ProfilePage from "./pages/Settings/Profile/ProfilePage";
 import { PropertyForm } from "./pages/properties/components/PropertyForm";
+import EditProperty from "./pages/properties/Edit";
 
 function App() {
   return (
@@ -83,7 +84,8 @@ function App() {
               element={<AppearanceForm />}
             />
             <Route path="/app/settings/team" element={<TeamManagementPage />} />
-            <Route path="/properties" element={<PropertyForm />} />
+            <Route path="/app/properties/create" element={<PropertyForm />} />
+            <Route path="/app/properties/:id/edit" element={<EditProperty />} />
 
             {/* Add other routes here */}
           </Routes>

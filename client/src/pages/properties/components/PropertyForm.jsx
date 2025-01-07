@@ -12,8 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PropertyBasicInfo } from "./PropertyBasicInfo";
-// import { PropertyPriceInfo } from "./PropertyPriceInfo";
-// import { PropertyAreaInfo } from "./PropertyAreaInfo";
+
 import { useProperty } from "../hooks/useProperty";
 import { propertySchema } from "../schema/propertySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +23,7 @@ import PropertyAdditionalInfo from "./PropertyAdditionalInfo";
 import PropertyEquipmentInfo from "./PropertyEquipmentInfo";
 import PropertyAddressInfo from "./PropertyAddressInfo";
 import AdminLayout from "@/layouts/AdminLayout";
+import { useEffect } from "react";
 
 export function PropertyForm({ property, onSuccess }) {
   const { createProperty, updateProperty, loading } = useProperty();
@@ -34,15 +34,27 @@ export function PropertyForm({ property, onSuccess }) {
     defaultValues: property || {
       title: "",
       description: "",
-      status: "draft",
-      price: {
-        amount: 0,
-        currency: "EUR",
-        type: "sale",
-      },
-      // Add other default values
+      status: "",
+      category: "",
+      object_type: "",
+      warnings: "",
+      features: "",
+      order_number: "",
+      unit_number: "",
+      internal_note: "",
+      price: {},
+      area: {},
+      additional: {},
+      equipment: {},
+      address: {},
     },
   });
+
+  useEffect(() => {
+    if (property) {
+      form.reset(property);
+    }
+  }, [property, form]);
 
   const onSubmit = async (data) => {
     try {
@@ -53,74 +65,72 @@ export function PropertyForm({ property, onSuccess }) {
       }
       onSuccess?.();
     } catch (error) {
-      console.error(error);
+      console.error("Form submission error:", error);
     }
   };
 
   return (
-    <AdminLayout>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <Card>
-                <CardHeader>Basic Info</CardHeader>
-                <CardContent>
-                  <PropertyBasicInfo form={form} />
-                </CardContent>
-              </Card>
-            </div>
-            <div>
-              <Card>
-                <CardHeader>Price Info</CardHeader>
-                <CardContent>
-                  <PropertyPriceInfo form={form} />
-                </CardContent>
-              </Card>
-            </div>
-            <div>
-              <Card>
-                <CardHeader>Area Info</CardHeader>
-                <CardContent>
-                  <PropertyAreaInfo form={form} />
-                </CardContent>
-              </Card>
-            </div>
-            <div>
-              <Card>
-                <CardHeader>Additional Info</CardHeader>
-                <CardContent>
-                  <PropertyAdditionalInfo form={form} />
-                </CardContent>
-              </Card>
-            </div>
-            <div>
-              <Card>
-                <CardHeader>Equipments</CardHeader>
-                <CardContent>
-                  <PropertyEquipmentInfo form={form} />
-                </CardContent>
-              </Card>
-            </div>
-            <div>
-              <Card>
-                <CardHeader>Address</CardHeader>
-                <CardContent>
-                  <PropertyAddressInfo form={form} />
-                </CardContent>
-              </Card>
-            </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <Card>
+              <CardHeader>Basic Info</CardHeader>
+              <CardContent>
+                <PropertyBasicInfo form={form} />
+              </CardContent>
+            </Card>
           </div>
+          <div>
+            <Card>
+              <CardHeader>Price Info</CardHeader>
+              <CardContent>
+                <PropertyPriceInfo form={form} />
+              </CardContent>
+            </Card>
+          </div>
+          <div>
+            <Card>
+              <CardHeader>Area Info</CardHeader>
+              <CardContent>
+                <PropertyAreaInfo form={form} />
+              </CardContent>
+            </Card>
+          </div>
+          <div>
+            <Card>
+              <CardHeader>Additional Info</CardHeader>
+              <CardContent>
+                <PropertyAdditionalInfo form={form} />
+              </CardContent>
+            </Card>
+          </div>
+          <div>
+            <Card>
+              <CardHeader>Equipments</CardHeader>
+              <CardContent>
+                <PropertyEquipmentInfo form={form} />
+              </CardContent>
+            </Card>
+          </div>
+          <div>
+            <Card>
+              <CardHeader>Address</CardHeader>
+              <CardContent>
+                <PropertyAddressInfo form={form} />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
-          <Button type="submit" disabled={loading}>
-            {loading
-              ? "Saving..."
-              : isEditing
-              ? "Update Property"
-              : "Create Property"}
-          </Button>
-        </form>
-      </Form>
-    </AdminLayout>
+        <Button type="submit" disabled={loading}>
+          {loading
+            ? "Saving..."
+            : isEditing
+            ? "Update Property"
+            : "Create Property"}
+        </Button>
+      </form>
+    </Form>
   );
 }
