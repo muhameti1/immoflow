@@ -21,7 +21,6 @@ class PropertyPrice extends Model
         'parking_price',
         'monthly_rental_income',
         'heating_in_additional_costs',
-
     ];
 
     public function property()
