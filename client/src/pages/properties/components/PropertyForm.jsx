@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -19,7 +19,7 @@ export function PropertyForm({ property, onSuccess }) {
   const { createProperty, updateProperty, loading } = useProperty();
   const isEditing = !!property;
 
-  const form = useForm({
+  const methods = useForm({
     resolver: zodResolver(propertySchema),
     defaultValues: property || {
       title: "",
@@ -134,19 +134,19 @@ export function PropertyForm({ property, onSuccess }) {
   useEffect(() => {
     if (property) {
       console.log("Setting form values:", property); // Debug log
-      form.reset(property);
+      methods.reset(property);
     }
-  }, [property, form]);
+  }, [property, methods]);
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
         <Card>
           <CardHeader>
             <CardTitle>Basic Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <PropertyBasicInfo form={form} />
+            <PropertyBasicInfo />
           </CardContent>
         </Card>
 
@@ -155,7 +155,7 @@ export function PropertyForm({ property, onSuccess }) {
             <CardTitle>Price Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <PropertyPriceInfo form={form} />
+            <PropertyPriceInfo />
           </CardContent>
         </Card>
 
@@ -164,7 +164,7 @@ export function PropertyForm({ property, onSuccess }) {
             <CardTitle>Area Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <PropertyAreaInfo form={form} />
+            <PropertyAreaInfo />
           </CardContent>
         </Card>
 
@@ -173,7 +173,7 @@ export function PropertyForm({ property, onSuccess }) {
             <CardTitle>Additional Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <PropertyAdditionalInfo form={form} />
+            <PropertyAdditionalInfo />
           </CardContent>
         </Card>
 
@@ -182,7 +182,7 @@ export function PropertyForm({ property, onSuccess }) {
             <CardTitle>Equipment</CardTitle>
           </CardHeader>
           <CardContent>
-            <PropertyEquipmentInfo form={form} />
+            <PropertyEquipmentInfo />
           </CardContent>
         </Card>
 
@@ -191,29 +191,31 @@ export function PropertyForm({ property, onSuccess }) {
             <CardTitle>Address</CardTitle>
           </CardHeader>
           <CardContent>
-            <PropertyAddressInfo form={form} />
+            <PropertyAddressInfo />
           </CardContent>
         </Card>
 
-        {form.formState.errors.root && (
+        {methods.formState.errors.root && (
           <div className="text-red-500 text-sm">
-            {form.formState.errors.root.message}
+            {methods.formState.errors.root.message}
           </div>
         )}
 
         <div className="flex justify-end">
           <Button
             type="submit"
-            disabled={loading}
+            disabled={methods.formState.isSubmitting}
             onClick={() => {
-              console.log("Current form values:", form.getValues()); // Debug log
+              console.log("Current form values:", methods.getValues()); // Debug log
             }}
           >
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {methods.formState.isSubmitting && (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}
             {isEditing ? "Update Property" : "Create Property"}
           </Button>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 }

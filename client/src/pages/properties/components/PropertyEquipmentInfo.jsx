@@ -1,13 +1,8 @@
-// src/components/properties/sections/PropertyEquipmentInfo.jsx
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-} from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
+import { useFormContext } from "react-hook-form";
 
-export default function PropertyEquipmentInfo({ form }) {
+export default function PropertyEquipmentInfo() {
+  const { register } = useFormContext();
+
   const equipmentItems = [
     { name: "bathtub", label: "Bathtub" },
     { name: "shower", label: "Shower" },
@@ -29,24 +24,20 @@ export default function PropertyEquipmentInfo({ form }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {equipmentItems.map((item) => (
-        <FormField
+        <div
           key={item.name}
-          control={form.control}
-          name={`equipment.${item.name}`}
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>{item.label}</FormLabel>
-              </div>
-            </FormItem>
-          )}
-        />
+          className="flex flex-row items-start space-x-3 space-y-0"
+        >
+          <input
+            type="checkbox"
+            id={item.name}
+            {...register(`equipment.${item.name}`)}
+            className="mt-1"
+          />
+          <label htmlFor={item.name} className="space-y-1 leading-none">
+            {item.label}
+          </label>
+        </div>
       ))}
     </div>
   );

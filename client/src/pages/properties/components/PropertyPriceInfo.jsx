@@ -1,199 +1,267 @@
-// src/components/properties/sections/PropertyPriceInfo.jsx
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useFormContext } from "react-hook-form";
 
-export function PropertyPriceInfo({ form }) {
+export function PropertyPriceInfo() {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <FormField
-        control={form.control}
-        name="price.amount"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Amount*</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                {...field}
-                onChange={(e) => field.onChange(parseFloat(e.target.value))}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
+      <div>
+        <label
+          htmlFor="price.amount"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Amount
+        </label>
+        <input
+          id="price.amount"
+          type="number"
+          {...register("price.amount", { required: "Amount is required" })}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.price?.amount && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.amount.message}
+          </p>
         )}
-      />
+      </div>
 
-      <FormField
-        control={form.control}
-        name="price.currency"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Currency*</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select currency" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="EUR">EUR</SelectItem>
-                <SelectItem value="USD">USD</SelectItem>
-                <SelectItem value="CHF">CHF</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
+      <div>
+        <label
+          htmlFor="price.price_per_meter"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Price per Meter
+        </label>
+        <input
+          id="price.price_per_meter"
+          type="number"
+          {...register("price.price_per_meter")}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.price?.price_per_meter && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.price_per_meter.message}
+          </p>
         )}
-      />
+      </div>
 
-      <FormField
-        control={form.control}
-        name="price.type"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Type*</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="sale">Sale</SelectItem>
-                <SelectItem value="rent">Rent</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
+      <div>
+        <label
+          htmlFor="price.currency"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Currency
+        </label>
+        <input
+          id="price.currency"
+          type="text"
+          {...register("price.currency", { required: "Currency is required" })}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.price?.currency && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.currency.message}
+          </p>
         )}
-      />
+      </div>
 
-      <FormField
-        control={form.control}
-        name="price.price_per_meter"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Price per meter</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                {...field}
-                onChange={(e) => field.onChange(parseFloat(e.target.value))}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
+      <div>
+        <label
+          htmlFor="price.type"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Type
+        </label>
+        <select
+          id="price.type"
+          {...register("price.type", { required: "Type is required" })}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        >
+          <option value="sale">Sale</option>
+          <option value="rent">Rent</option>
+        </select>
+        {errors.price?.type && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.type.message}
+          </p>
         )}
-      />
+      </div>
 
-      {form.watch("price.type") === "rent" && (
-        <>
-          <FormField
-            control={form.control}
-            name="price.warm_rent"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Warm Rent</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    {...field}
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="price.cold_rent"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Cold Rent</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    {...field}
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="price.heating_costs"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Heating Costs</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    {...field}
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </>
-      )}
-
-      <FormField
-        control={form.control}
-        name="price.additional_costs"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Additional Costs</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                {...field}
-                onChange={(e) => field.onChange(parseFloat(e.target.value))}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
+      <div>
+        <label
+          htmlFor="price.warm_rent"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Warm Rent
+        </label>
+        <input
+          id="price.warm_rent"
+          type="number"
+          {...register("price.warm_rent")}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.price?.warm_rent && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.warm_rent.message}
+          </p>
         )}
-      />
+      </div>
+
+      <div>
+        <label
+          htmlFor="price.cold_rent"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Cold Rent
+        </label>
+        <input
+          id="price.cold_rent"
+          type="number"
+          {...register("price.cold_rent")}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.price?.cold_rent && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.cold_rent.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label
+          htmlFor="price.heating_costs"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Heating Costs
+        </label>
+        <input
+          id="price.heating_costs"
+          type="number"
+          {...register("price.heating_costs")}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.price?.heating_costs && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.heating_costs.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label
+          htmlFor="price.additional_costs"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Additional Costs
+        </label>
+        <input
+          id="price.additional_costs"
+          type="number"
+          {...register("price.additional_costs")}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.price?.additional_costs && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.additional_costs.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label
+          htmlFor="price.non_transferable_costs"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Non-transferable Costs
+        </label>
+        <input
+          id="price.non_transferable_costs"
+          type="number"
+          {...register("price.non_transferable_costs")}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.price?.non_transferable_costs && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.non_transferable_costs.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label
+          htmlFor="price.parking_price"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Parking Price
+        </label>
+        <input
+          id="price.parking_price"
+          type="number"
+          {...register("price.parking_price")}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.price?.parking_price && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.parking_price.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label
+          htmlFor="price.monthly_rental_income"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Monthly Rental Income
+        </label>
+        <input
+          id="price.monthly_rental_income"
+          type="number"
+          {...register("price.monthly_rental_income")}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        {errors.price?.monthly_rental_income && (
+          <p className="mt-2 text-sm text-red-600">
+            {errors.price.monthly_rental_income.message}
+          </p>
+        )}
+      </div>
 
       <div className="col-span-full">
-        <FormField
-          control={form.control}
-          name="price.price_on_request"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>Price on request</FormLabel>
-              </div>
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-row items-start space-x-3 space-y-0">
+          <input
+            type="checkbox"
+            id="price.price_on_request"
+            {...register("price.price_on_request")}
+            className="mt-1"
+          />
+          <label
+            htmlFor="price.price_on_request"
+            className="space-y-1 leading-none"
+          >
+            Price on request
+          </label>
+        </div>
+      </div>
+
+      <div className="col-span-full">
+        <div className="flex flex-row items-start space-x-3 space-y-0">
+          <input
+            type="checkbox"
+            id="price.heating_in_additional_costs"
+            {...register("price.heating_in_additional_costs")}
+            className="mt-1"
+          />
+          <label
+            htmlFor="price.heating_in_additional_costs"
+            className="space-y-1 leading-none"
+          >
+            Heating in Additional Costs
+          </label>
+        </div>
       </div>
     </div>
   );
