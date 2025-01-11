@@ -12,6 +12,8 @@ import PropertyAdditionalInfo from "./PropertyAdditionalInfo";
 import PropertyEquipmentInfo from "./PropertyEquipmentInfo";
 import PropertyAddressInfo from "./PropertyAddressInfo";
 import { propertySchema } from "../schema/propertySchema";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 export function PropertyForm({ property, onSuccess }) {
   const { createProperty, updateProperty, loading } = useProperty();
@@ -108,21 +110,33 @@ export function PropertyForm({ property, onSuccess }) {
 
   const onSubmit = async (data) => {
     try {
+      console.log("Form data:", data); // Debug log
       if (isEditing) {
         await updateProperty(property.id, data);
       } else {
         await createProperty(data);
       }
-      onSuccess?.();
+      toast.success(
+        isEditing
+          ? "Property updated successfully"
+          : "Property created successfully"
+      );
     } catch (error) {
-      console.error(error);
-
-      form.setError("root", {
-        type: "manual",
-        message: "Failed to save property. Please try again.",
+      console.error("Error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
       });
+      toast.error(error.response?.data?.message || "Failed to save property");
     }
   };
+
+  useEffect(() => {
+    if (property) {
+      console.log("Setting form values:", property); // Debug log
+      form.reset(property);
+    }
+  }, [property, form]);
 
   return (
     <Form {...form}>
@@ -188,7 +202,13 @@ export function PropertyForm({ property, onSuccess }) {
         )}
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={loading}>
+          <Button
+            type="submit"
+            disabled={loading}
+            onClick={() => {
+              console.log("Current form values:", form.getValues()); // Debug log
+            }}
+          >
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {isEditing ? "Update Property" : "Create Property"}
           </Button>

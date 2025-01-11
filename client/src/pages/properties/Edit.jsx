@@ -159,6 +159,9 @@ export default function EditProperty() {
             property={property}
             // onSubmit={handleSubmit}
             onSuccess={() => navigate("/app/properties")}
+            onError={(error) => {
+              console.error("Property update failed:", error);
+            }}
           />
         )}
       </div>
