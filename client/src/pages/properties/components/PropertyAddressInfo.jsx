@@ -1,3 +1,7 @@
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useFormContext } from "react-hook-form";
 
 export default function PropertyAddressInfo() {
@@ -9,17 +13,13 @@ export default function PropertyAddressInfo() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <label
-          htmlFor="address.street"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <Label htmlFor="address.street" className="">
           Street
-        </label>
-        <input
+        </Label>
+        <Input
           id="address.street"
           type="text"
           {...register("address.street")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
         {errors.address?.street && (
           <p className="mt-2 text-sm text-red-600">
@@ -29,17 +29,13 @@ export default function PropertyAddressInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="address.street_number"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <Label htmlFor="address.street_number" className="">
           Street Number
-        </label>
-        <input
+        </Label>
+        <Input
           id="address.street_number"
           type="text"
           {...register("address.street_number")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
         {errors.address?.street_number && (
           <p className="mt-2 text-sm text-red-600">
@@ -49,17 +45,13 @@ export default function PropertyAddressInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="address.zip_code"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <Label htmlFor="address.zip_code" className="">
           Zip Code
-        </label>
-        <input
+        </Label>
+        <Input
           id="address.zip_code"
           type="text"
           {...register("address.zip_code")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
         {errors.address?.zip_code && (
           <p className="mt-2 text-sm text-red-600">
@@ -69,18 +61,10 @@ export default function PropertyAddressInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="address.city"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <Label htmlFor="address.city" className="">
           City
-        </label>
-        <input
-          id="address.city"
-          type="text"
-          {...register("address.city")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+        </Label>
+        <Input id="address.city" type="text" {...register("address.city")} />
         {errors.address?.city && (
           <p className="mt-2 text-sm text-red-600">
             {errors.address.city.message}
@@ -89,18 +73,10 @@ export default function PropertyAddressInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="address.state"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <Label htmlFor="address.state" className="">
           State
-        </label>
-        <input
-          id="address.state"
-          type="text"
-          {...register("address.state")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+        </Label>
+        <Input id="address.state" type="text" {...register("address.state")} />
         {errors.address?.state && (
           <p className="mt-2 text-sm text-red-600">
             {errors.address.state.message}
@@ -109,17 +85,13 @@ export default function PropertyAddressInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="address.country"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <Label htmlFor="address.country" className="">
           Country
-        </label>
-        <input
+        </Label>
+        <Input
           id="address.country"
           type="text"
           {...register("address.country")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
         {errors.address?.country && (
           <p className="mt-2 text-sm text-red-600">
@@ -129,17 +101,13 @@ export default function PropertyAddressInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="address.region"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <Label htmlFor="address.region" className="">
           Region
-        </label>
-        <input
+        </Label>
+        <Input
           id="address.region"
           type="text"
           {...register("address.region")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
         {errors.address?.region && (
           <p className="mt-2 text-sm text-red-600">
@@ -149,18 +117,14 @@ export default function PropertyAddressInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="address.latitude"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <Label htmlFor="address.latitude" className="">
           Latitude
-        </label>
-        <input
+        </Label>
+        <Input
           id="address.latitude"
           type="number"
           step="any"
           {...register("address.latitude")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
         {errors.address?.latitude && (
           <p className="mt-2 text-sm text-red-600">
@@ -170,18 +134,14 @@ export default function PropertyAddressInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="address.longitude"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <Label htmlFor="address.longitude" className="">
           Longitude
-        </label>
-        <input
+        </Label>
+        <Input
           id="address.longitude"
           type="number"
           step="any"
           {...register("address.longitude")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
         {errors.address?.longitude && (
           <p className="mt-2 text-sm text-red-600">
@@ -192,33 +152,30 @@ export default function PropertyAddressInfo() {
 
       <div className="col-span-full">
         <div className="flex flex-row items-start space-x-3 space-y-0">
-          <input
+          <Checkbox
+            id="address.hide_exact_location"
+            {...register("address.hide_exact_location")}
+          />
+          {/* <Input
             type="checkbox"
             id="address.hide_exact_location"
             {...register("address.hide_exact_location")}
             className="mt-1"
-          />
-          <label
+          /> */}
+          <Label
             htmlFor="address.hide_exact_location"
             className="space-y-1 leading-none"
           >
             Hide Exact Location
-          </label>
+          </Label>
         </div>
       </div>
 
       <div className="col-span-full">
-        <label
-          htmlFor="address.directions"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <Label htmlFor="address.directions" className="">
           Directions
-        </label>
-        <textarea
-          id="address.directions"
-          {...register("address.directions")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+        </Label>
+        <Textarea id="address.directions" {...register("address.directions")} />
         {errors.address?.directions && (
           <p className="mt-2 text-sm text-red-600">
             {errors.address.directions.message}

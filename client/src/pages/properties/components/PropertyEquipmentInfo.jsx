@@ -1,3 +1,5 @@
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { useFormContext } from "react-hook-form";
 
 export default function PropertyEquipmentInfo() {
@@ -28,15 +30,16 @@ export default function PropertyEquipmentInfo() {
           key={item.name}
           className="flex flex-row items-start space-x-3 space-y-0"
         >
-          <input
+          <Checkbox id={item.name} {...register(`equipment.${item.name}`)} />
+          {/* <input
             type="checkbox"
             id={item.name}
             {...register(`equipment.${item.name}`)}
             className="mt-1"
-          />
-          <label htmlFor={item.name} className="space-y-1 leading-none">
+          /> */}
+          <Label htmlFor={item.name} className="space-y-1 leading-none">
             {item.label}
-          </label>
+          </Label>
         </div>
       ))}
     </div>

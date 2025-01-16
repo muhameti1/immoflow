@@ -1,3 +1,13 @@
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useFormContext } from "react-hook-form";
 
 export function PropertyBasicInfo() {
@@ -7,37 +17,22 @@ export function PropertyBasicInfo() {
   } = useFormContext();
 
   return (
-    <div className="space-y-6">
-      <div>
-        <label
-          htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Title
-        </label>
-        <input
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="col-span-full">
+        <Label htmlFor="title">Title</Label>
+        <Input
           id="title"
           type="text"
           {...register("title", { required: "Title is required" })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
         {errors.title && (
           <p className="mt-2 text-sm text-red-600">{errors.title.message}</p>
         )}
       </div>
 
-      <div>
-        <label
-          htmlFor="description"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Description
-        </label>
-        <textarea
-          id="description"
-          {...register("description")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+      <div className="col-span-full">
+        <Label htmlFor="description">Description</Label>
+        <Textarea id="description" {...register("description")} />
         {errors.description && (
           <p className="mt-2 text-sm text-red-600">
             {errors.description.message}
@@ -46,58 +41,34 @@ export function PropertyBasicInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="status"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Status
-        </label>
-        <select
-          id="status"
-          {...register("status")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        >
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-          <option value="draft">Draft</option>
-          <option value="archive">Archive</option>
-        </select>
+        <Label htmlFor="status">Status</Label>
+        <Select id="status" {...register("status")}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="active">Active</SelectItem>
+            <SelectItem value="inactive">Inactive</SelectItem>
+            <SelectItem value="draft">Draft</SelectItem>
+            <SelectItem value="archive">Archive</SelectItem>
+          </SelectContent>
+        </Select>
         {errors.status && (
           <p className="mt-2 text-sm text-red-600">{errors.status.message}</p>
         )}
       </div>
 
       <div>
-        <label
-          htmlFor="category"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Category
-        </label>
-        <input
-          id="category"
-          type="text"
-          {...register("category")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+        <Label htmlFor="category">Category</Label>
+        <Input id="category" type="text" {...register("category")} />
         {errors.category && (
           <p className="mt-2 text-sm text-red-600">{errors.category.message}</p>
         )}
       </div>
 
       <div>
-        <label
-          htmlFor="object_type"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Object Type
-        </label>
-        <input
-          id="object_type"
-          type="text"
-          {...register("object_type")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+        <Label htmlFor="object_type">Object Type</Label>
+        <Input id="object_type" type="text" {...register("object_type")} />
         {errors.object_type && (
           <p className="mt-2 text-sm text-red-600">
             {errors.object_type.message}
@@ -106,54 +77,24 @@ export function PropertyBasicInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="warnings"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Warnings
-        </label>
-        <input
-          id="warnings"
-          type="text"
-          {...register("warnings")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+        <Label htmlFor="warnings">Warnings</Label>
+        <Input id="warnings" type="text" {...register("warnings")} />
         {errors.warnings && (
           <p className="mt-2 text-sm text-red-600">{errors.warnings.message}</p>
         )}
       </div>
 
       <div>
-        <label
-          htmlFor="features"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Features
-        </label>
-        <input
-          id="features"
-          type="text"
-          {...register("features")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+        <Label htmlFor="features">Features</Label>
+        <Input id="features" type="text" {...register("features")} />
         {errors.features && (
           <p className="mt-2 text-sm text-red-600">{errors.features.message}</p>
         )}
       </div>
 
       <div>
-        <label
-          htmlFor="order_number"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Order Number
-        </label>
-        <input
-          id="order_number"
-          type="text"
-          {...register("order_number")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+        <Label htmlFor="order_number">Order Number</Label>
+        <Input id="order_number" type="text" {...register("order_number")} />
         {errors.order_number && (
           <p className="mt-2 text-sm text-red-600">
             {errors.order_number.message}
@@ -162,18 +103,8 @@ export function PropertyBasicInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="unit_number"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Unit Number
-        </label>
-        <input
-          id="unit_number"
-          type="text"
-          {...register("unit_number")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+        <Label htmlFor="unit_number">Unit Number</Label>
+        <Input id="unit_number" type="text" {...register("unit_number")} />
         {errors.unit_number && (
           <p className="mt-2 text-sm text-red-600">
             {errors.unit_number.message}
@@ -182,17 +113,8 @@ export function PropertyBasicInfo() {
       </div>
 
       <div>
-        <label
-          htmlFor="internal_note"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Internal Note
-        </label>
-        <textarea
-          id="internal_note"
-          {...register("internal_note")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
+        <Label htmlFor="internal_note">Internal Note</Label>
+        <Input type="text" id="internal_note" {...register("internal_note")} />
         {errors.internal_note && (
           <p className="mt-2 text-sm text-red-600">
             {errors.internal_note.message}

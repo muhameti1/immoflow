@@ -140,7 +140,10 @@ export function PropertyForm({ property, onSuccess }) {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className=" grid grid-cols-2 gap-4"
+      >
         <Card>
           <CardHeader>
             <CardTitle>Basic Information</CardTitle>
