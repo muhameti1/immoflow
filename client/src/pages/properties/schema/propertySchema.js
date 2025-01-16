@@ -14,46 +14,61 @@ export const propertySchema = z.object({
   internal_note: z.string().optional(),
 
   price: z.object({
-    amount: z.number().min(0, "Amount must be positive"),
-    price_per_meter: z.number().min(0).optional(),
+    amount: z.coerce.number().min(0, "Amount must be positive"),
+    price_per_meter: z.coerce.number().min(0).optional(),
     currency: z.string().min(1, "Currency is required"),
     type: z.enum(["sale", "rent"], { required_error: "Type is required" }),
     price_on_request: z.boolean().default(false),
-    warm_rent: z.number().min(0).optional(),
-    cold_rent: z.number().min(0).optional(),
-    heating_costs: z.number().min(0).optional(),
-    additional_costs: z.number().min(0).optional(),
-    non_transferable_costs: z.number().min(0).optional(),
-    parking_price: z.number().min(0).optional(),
-    monthly_rental_income: z.number().min(0).optional(),
+    warm_rent: z.coerce.number().min(0).optional(),
+    cold_rent: z.coerce.number().min(0).optional(),
+    heating_costs: z.coerce.number().min(0).optional(),
+    additional_costs: z.coerce.number().min(0).optional(),
+    non_transferable_costs: z.coerce.number().min(0).optional(),
+    parking_price: z.coerce.number().min(0).optional(),
+    monthly_rental_income: z.coerce.number().min(0).optional(),
     heating_in_additional_costs: z.boolean().default(false),
   }),
 
   area: z
     .object({
-      total_area: z.number().min(0).optional(),
-      living_area: z.number().min(0).optional(),
-      usable_area: z.number().min(0).optional(),
-      land_area: z.number().min(0).optional(),
-      storage_area: z.number().min(0).optional(),
-      terrace_area: z.number().min(0).optional(),
-      balcony_area: z.number().min(0).optional(),
-      garden_area: z.number().min(0).optional(),
-      basement_area: z.number().min(0).optional(),
-      garage_area: z.number().min(0).optional(),
-      parking_area: z.number().min(0).optional(),
+      total_area: z.coerce.number().min(0).optional(),
+      living_area: z.coerce.number().min(0).optional(),
+      usable_area: z.coerce.number().min(0).optional(),
+      land_area: z.coerce.number().min(0).optional(),
+      storage_area: z.coerce.number().min(0).optional(),
+      terrace_area: z.coerce.number().min(0).optional(),
+      balcony_area: z.coerce.number().min(0).optional(),
+      garden_area: z.coerce.number().min(0).optional(),
+      basement_area: z.coerce.number().min(0).optional(),
+      garage_area: z.coerce.number().min(0).optional(),
+      parking_area: z.coerce.number().min(0).optional(),
     })
     .optional(),
 
   additional: z
     .object({
-      year_built: z.number().int().positive().optional().nullable(),
-      last_renovation_year: z.number().int().positive().optional().nullable(),
-      number_of_floors: z.number().int().positive().optional().nullable(),
+      year_built: z.coerce.number().int().positive().optional().nullable(),
+      last_renovation_year: z.coerce
+        .number()
+        .int()
+        .positive()
+        .optional()
+        .nullable(),
+      number_of_floors: z.coerce
+        .number()
+        .int()
+        .positive()
+        .optional()
+        .nullable(),
       floor_number: z.string().optional(),
-      number_of_rooms: z.number().int().positive().optional().nullable(),
-      number_of_bathrooms: z.number().int().positive().optional().nullable(),
-      parking_spaces: z.number().int().min(0).optional().nullable(),
+      number_of_rooms: z.coerce.number().int().positive().optional().nullable(),
+      number_of_bathrooms: z.coerce
+        .number()
+        .int()
+        .positive()
+        .optional()
+        .nullable(),
+      parking_spaces: z.coerce.number().int().min(0).optional().nullable(),
       energy_rating: z.string().optional(),
       heating_type: z.string().optional(),
       construction_type: z.string().optional(),
@@ -92,8 +107,8 @@ export const propertySchema = z.object({
       state: z.string().optional(),
       country: z.string().optional(),
       region: z.string().optional(),
-      latitude: z.number().min(-90).max(90).optional().nullable(),
-      longitude: z.number().min(-180).max(180).optional().nullable(),
+      latitude: z.coerce.number().min(-90).max(90).optional().nullable(),
+      longitude: z.coerce.number().min(-180).max(180).optional().nullable(),
       hide_exact_location: z.boolean().default(false),
       directions: z.string().optional(),
     })
