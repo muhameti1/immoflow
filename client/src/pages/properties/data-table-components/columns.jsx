@@ -9,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import axiosInstance from "@/api/axios";
+import { toast } from "sonner";
 
 export const columns = [
   {
@@ -80,12 +82,26 @@ export const columns = [
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() =>
-                (window.location.href = `/properties/${property.id}/edit`)
+                (window.location.href = `/app/properties/${property.id}/edit`)
               }
             >
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={async () => {
+                try {
+                  await axiosInstance.delete(`/properties/${property.id}`);
+                  toast.success("Property deleted successfully");
+                  window.location.reload();
+                } catch (error) {
+                  console.error("Error deleting property:", error);
+                  toast.error("Error deleting property");
+                }
+              }}
+            >
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
