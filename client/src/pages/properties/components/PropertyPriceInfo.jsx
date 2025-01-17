@@ -8,11 +8,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 export function PropertyPriceInfo() {
   const {
     register,
+    control,
     formState: { errors },
   } = useFormContext();
 
@@ -62,18 +63,21 @@ export function PropertyPriceInfo() {
 
       <div>
         <Label htmlFor="price.type">Type</Label>
-        <Select
-          id="price.type"
-          {...register("price.type", { required: "Type is required" })}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="sale">Sale</SelectItem>
-            <SelectItem value="rent">Rent</SelectItem>
-          </SelectContent>
-        </Select>
+        <Controller
+          name="price.type"
+          control={control}
+          render={({ field }) => (
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="sale">Sale</SelectItem>
+                <SelectItem value="rent">Rent</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
+        />
         {errors.price?.type && (
           <p className="mt-2 text-sm text-red-600">
             {errors.price.type.message}
@@ -185,16 +189,18 @@ export function PropertyPriceInfo() {
 
       <div className="col-span-full">
         <div className="flex flex-row items-start space-x-3 space-y-0">
-          <Checkbox
-            id="price.price_on_request"
-            {...register("price.price_on_request")}
+          <Controller
+            name="price.price_on_request"
+            control={control}
+            defaultValue={false}
+            render={({ field }) => (
+              <Checkbox
+                id="price.price_on_request"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            )}
           />
-          {/* <Input
-            type="checkbox"
-            id="price.price_on_request"
-            {...register("price.price_on_request")}
-            className="mt-1"
-          /> */}
           <Label
             htmlFor="price.price_on_request"
             className="space-y-1 leading-none"
@@ -206,16 +212,18 @@ export function PropertyPriceInfo() {
 
       <div className="col-span-full">
         <div className="flex flex-row items-start space-x-3 space-y-0">
-          <Checkbox
-            id="price.heating_in_additional_costs"
-            {...register("price.heating_in_additional_costs")}
+          <Controller
+            name="price.heating_in_additional_costs"
+            control={control}
+            defaultValue={false}
+            render={({ field }) => (
+              <Checkbox
+                id="price.heating_in_additional_costs"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            )}
           />
-          {/* <Input
-            type="checkbox"
-            id="price.heating_in_additional_costs"
-            {...register("price.heating_in_additional_costs")}
-            className="mt-1"
-          /> */}
           <Label
             htmlFor="price.heating_in_additional_costs"
             className="space-y-1 leading-none"

@@ -2,11 +2,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 export default function PropertyAddressInfo() {
   const {
     register,
+    control,
     formState: { errors },
   } = useFormContext();
 
@@ -152,16 +153,18 @@ export default function PropertyAddressInfo() {
 
       <div className="col-span-full">
         <div className="flex flex-row items-start space-x-3 space-y-0">
-          <Checkbox
-            id="address.hide_exact_location"
-            {...register("address.hide_exact_location")}
+          <Controller
+            name="address.hide_exact_location"
+            control={control}
+            defaultValue={false}
+            render={({ field }) => (
+              <Checkbox
+                id="address.hide_exact_location"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            )}
           />
-          {/* <Input
-            type="checkbox"
-            id="address.hide_exact_location"
-            {...register("address.hide_exact_location")}
-            className="mt-1"
-          /> */}
           <Label
             htmlFor="address.hide_exact_location"
             className="space-y-1 leading-none"

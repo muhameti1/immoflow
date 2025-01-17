@@ -8,11 +8,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 
 export function PropertyBasicInfo() {
   const {
     register,
+    control,
     formState: { errors },
   } = useFormContext();
 
@@ -42,22 +43,29 @@ export function PropertyBasicInfo() {
 
       <div>
         <Label htmlFor="status">Status</Label>
-        <Select id="status" {...register("status")}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="inactive">Inactive</SelectItem>
-            <SelectItem value="draft">Draft</SelectItem>
-            <SelectItem value="archive">Archive</SelectItem>
-          </SelectContent>
-        </Select>
+        <Controller
+          name="status"
+          control={control}
+          render={({ field }) => (
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="draft">Draft</SelectItem>
+                <SelectItem value="archive">Archive</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
+        />
         {errors.status && (
           <p className="mt-2 text-sm text-red-600">{errors.status.message}</p>
         )}
       </div>
 
+      {/* Rest of the fields remain the same */}
       <div>
         <Label htmlFor="category">Category</Label>
         <Input id="category" type="text" {...register("category")} />

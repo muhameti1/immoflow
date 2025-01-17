@@ -11,11 +11,29 @@ import {
 import { Badge } from "@/components/ui/badge";
 import axiosInstance from "@/api/axios";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 export const columns = [
   {
     accessorKey: "title",
     header: "Title",
+  },
+  {
+    accessorKey: "unit_number",
+    header: "Unit Number",
+
+    cell: ({ row }) => {
+      const property = row.original;
+      const unit_number = row.getValue("unit_number");
+      return (
+        <Link
+          to={`/app/properties/${property.id}/edit`}
+          className="hover:underline"
+        >
+          {unit_number}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "status",

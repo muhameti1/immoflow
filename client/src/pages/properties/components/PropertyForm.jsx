@@ -14,6 +14,8 @@ import PropertyAddressInfo from "./PropertyAddressInfo";
 import { propertySchema } from "../schema/propertySchema";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsContent } from "@radix-ui/react-tabs";
 
 export function PropertyForm({ property, onSuccess }) {
   const { createProperty, updateProperty, loading } = useProperty();
@@ -133,16 +135,15 @@ export function PropertyForm({ property, onSuccess }) {
 
   useEffect(() => {
     if (property) {
-      console.log("Setting form values:", property); // Debug log
       methods.reset(property);
     }
   }, [property, methods]);
 
-  return (
+  const PropertyDetailsForm = () => (
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
-        className=" grid grid-cols-2 gap-4"
+        className="grid grid-cols-2 gap-4"
       >
         <Card>
           <CardHeader>
@@ -204,14 +205,8 @@ export function PropertyForm({ property, onSuccess }) {
           </div>
         )}
 
-        <div className="flex justify-end">
-          <Button
-            type="submit"
-            disabled={methods.formState.isSubmitting}
-            onClick={() => {
-              console.log("Current form values:", methods.getValues()); // Debug log
-            }}
-          >
+        <div className="flex justify-end col-span-2">
+          <Button type="submit" disabled={methods.formState.isSubmitting}>
             {methods.formState.isSubmitting && (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             )}
@@ -221,4 +216,63 @@ export function PropertyForm({ property, onSuccess }) {
       </form>
     </FormProvider>
   );
+
+  return (
+    <div className="w-full space-y-6">
+      {isEditing ? (
+        <Tabs defaultValue="details" className="w-full">
+          <TabsList className="grid w-full grid-cols-4 mb-4">
+            <TabsTrigger value="details">Property Details</TabsTrigger>
+            <TabsTrigger value="documents">Documents</TabsTrigger>
+            <TabsTrigger value="images">Images</TabsTrigger>
+            <TabsTrigger value="history">History</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="details">
+            <PropertyDetailsForm />
+          </TabsContent>
+
+          <TabsContent value="documents">
+            <Card>
+              <CardHeader>
+                <CardTitle>Documents</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {/* Add your Documents component here */}
+                <p>Documents management interface will go here</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="images">
+            <Card>
+              <CardHeader>
+                <CardTitle>Images</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {/* Add your Images component here */}
+                <p>Image gallery and upload interface will go here</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="history">
+            <Card>
+              <CardHeader>
+                <CardTitle>History</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {/* Add your History component here */}
+                <p>Property history and activity log will go here</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      ) : (
+        <PropertyDetailsForm />
+      )}
+    </div>
+  );
 }
+
+export default PropertyForm;

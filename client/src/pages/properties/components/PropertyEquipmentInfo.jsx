@@ -1,9 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 
 export default function PropertyEquipmentInfo() {
-  const { register } = useFormContext();
+  const { control } = useFormContext();
 
   const equipmentItems = [
     { name: "bathtub", label: "Bathtub" },
@@ -30,13 +30,19 @@ export default function PropertyEquipmentInfo() {
           key={item.name}
           className="flex flex-row items-start space-x-3 space-y-0"
         >
-          <Checkbox id={item.name} {...register(`equipment.${item.name}`)} />
-          {/* <input
-            type="checkbox"
-            id={item.name}
-            {...register(`equipment.${item.name}`)}
-            className="mt-1"
-          /> */}
+          <Controller
+            name={`equipment.${item.name}`}
+            control={control}
+            defaultValue={false}
+            render={({ field }) => (
+              <Checkbox
+                id={item.name}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            )}
+          />
+
           <Label htmlFor={item.name} className="space-y-1 leading-none">
             {item.label}
           </Label>
