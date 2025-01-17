@@ -3,15 +3,15 @@ import * as z from "zod";
 
 export const propertySchema = z.object({
   title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
+  description: z.string().nullable().optional(),
   status: z.enum(["active", "inactive", "draft", "archive"]).optional(),
-  category: z.string().optional(),
-  object_type: z.string().optional(),
-  warnings: z.string().optional(),
-  features: z.string().optional(),
-  order_number: z.string().optional(),
-  unit_number: z.string().optional(),
-  internal_note: z.string().optional(),
+  category: z.string().nullable().optional(),
+  object_type: z.string().nullable().optional(),
+  warnings: z.string().nullable().optional(),
+  features: z.string().nullable().optional(),
+  order_number: z.string().nullable().optional(),
+  unit_number: z.string().nullable().optional(),
+  internal_note: z.string().nullable().optional(),
 
   price: z.object({
     amount: z.coerce.number().min(0, "Amount must be positive"),
@@ -47,36 +47,52 @@ export const propertySchema = z.object({
 
   additional: z
     .object({
-      year_built: z.coerce.number().int().positive().optional().nullable(),
+      year_built: z.coerce
+        .number()
+        .int()
+        .transform((val) => (val === 0 ? null : val))
+        .nullable()
+        .optional(),
       last_renovation_year: z.coerce
         .number()
         .int()
-        .positive()
-        .optional()
-        .nullable(),
+        .transform((val) => (val === 0 ? null : val))
+        .nullable()
+        .optional(),
       number_of_floors: z.coerce
         .number()
         .int()
-        .positive()
-        .optional()
-        .nullable(),
-      floor_number: z.string().optional(),
-      number_of_rooms: z.coerce.number().int().positive().optional().nullable(),
+        .transform((val) => (val === 0 ? null : val))
+        .nullable()
+        .optional(),
+      floor_number: z.string().nullable().optional(),
+      number_of_rooms: z.coerce
+        .number()
+        .int()
+        .transform((val) => (val === 0 ? null : val))
+        .nullable()
+        .optional(),
       number_of_bathrooms: z.coerce
         .number()
         .int()
-        .positive()
-        .optional()
-        .nullable(),
-      parking_spaces: z.coerce.number().int().min(0).optional().nullable(),
-      energy_rating: z.string().optional(),
-      heating_type: z.string().optional(),
-      construction_type: z.string().optional(),
-      building_condition: z.string().optional(),
-      last_modernization: z.string().optional(),
-      interior_quality: z.string().optional(),
+        .transform((val) => (val === 0 ? null : val))
+        .nullable()
+        .optional(),
+      parking_spaces: z.coerce
+        .number()
+        .int()
+        .transform((val) => (val === 0 ? null : val))
+        .nullable()
+        .optional(),
+      energy_rating: z.string().nullable().optional(),
+      heating_type: z.string().nullable().optional(),
+      construction_type: z.string().nullable().optional(),
+      building_condition: z.string().nullable().optional(),
+      last_modernization: z.string().nullable().optional(),
+      interior_quality: z.string().nullable().optional(),
     })
-    .optional(),
+    .optional()
+    .nullable(),
 
   equipment: z
     .object({
@@ -100,17 +116,17 @@ export const propertySchema = z.object({
 
   address: z
     .object({
-      street: z.string().optional(),
-      street_number: z.string().optional(),
-      zip_code: z.string().max(20).optional(),
-      city: z.string().optional(),
-      state: z.string().optional(),
-      country: z.string().optional(),
-      region: z.string().optional(),
+      street: z.string().nullable().optional(),
+      street_number: z.string().nullable().optional(),
+      zip_code: z.string().nullable().optional(),
+      city: z.string().nullable().optional(),
+      state: z.string().nullable().optional(),
+      country: z.string().nullable().optional(),
+      region: z.string().nullable().optional(),
       latitude: z.coerce.number().min(-90).max(90).optional().nullable(),
       longitude: z.coerce.number().min(-180).max(180).optional().nullable(),
       hide_exact_location: z.boolean().default(false),
-      directions: z.string().optional(),
+      directions: z.string().nullable().optional(),
     })
     .optional(),
 });
