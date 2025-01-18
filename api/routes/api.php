@@ -28,10 +28,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/company-profile', [CompanyController::class, 'update']);
     Route::get('/company/users', action: [CompanyController::class, 'users']);
     Route::apiResource('properties', PropertyController::class);
-    Route::post('/properties/{property}/images', [PropertyImageController::class, 'store']);
-    Route::delete('/properties/{property}/images/{image}', [PropertyImageController::class, 'destroy']);
-    Route::put('/properties/{property}/images/{image}/thumbnail', [PropertyImageController::class, 'setThumbnail']);
+    // Route::post('/properties/{property}/images', [PropertyImageController::class, 'store']);
+    // Route::delete('/properties/{property}/images/{image}', [PropertyImageController::class, 'destroy']);
+    // Route::put('/properties/{property}/images/{image}/thumbnail', [PropertyImageController::class, 'setThumbnail']);
 });
+
+Route::post('/properties/{property}/images', [PropertyImageController::class, 'store']);
+Route::delete('/properties/{property}/images/{image}', [PropertyImageController::class, 'destroy']);
+Route::put('/properties/{property}/images/{image}/thumbnail', [PropertyImageController::class, 'setThumbnail']);
+Route::get('/properties/{property}/images', [PropertyImageController::class, 'index']);
+
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user()->load('roles');
 });

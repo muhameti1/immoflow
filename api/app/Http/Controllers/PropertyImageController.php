@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Storage;
 
 class PropertyImageController extends Controller
 {
+    public function index($id)
+    {
+        $images = PropertyImage::where('property_id', $id)->get();
+        return response()->json($images);
+    }
+
     public function store(Request $request, $propertyId)
     {
         try {
@@ -18,7 +24,7 @@ class PropertyImageController extends Controller
 
             $request->validate([
                 'images' => 'required',
-                'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+                'images.*' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
                 'is_private' => 'nullable|boolean',
                 'show_in_portals' => 'nullable|boolean'
             ]);
