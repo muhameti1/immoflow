@@ -110,4 +110,28 @@ class PropertyImageController extends Controller
             ], 422);
         }
     }
+
+    public function update(Request $request, $propertyId, $imageId)
+    {
+        try {
+            $image = PropertyImage::where('property_id', $propertyId)
+                ->where('id', $imageId)
+                ->firstOrFail();
+
+            $image->update($request->only([
+                'show_in_portals',
+                'is_private',
+            ]));
+
+            return response()->json([
+                'message' => 'Image updated successfully',
+                'image' => $image
+            ]);
+        } catch (Exception $e) {
+            Log::error('Failed to update image', ['error' => $e->getMessage()]);
+            return response()->json([
+                'message' => 'Failed to update image'
+            ], 422);
+        }
+    }
 }

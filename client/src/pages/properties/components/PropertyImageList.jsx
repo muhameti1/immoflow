@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { PenIcon } from "lucide-react";
 import {
   Dialog,
@@ -12,9 +12,24 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 
-const PropertyImageList = ({ images, refreshImages, propertyId }) => {
+const PropertyImageList = ({ images: initialImages, propertyId }) => {
+  const [images, setImages] = useState(initialImages);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const refreshImages = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/properties/${propertyId}/images`
+      );
+      if (!response.ok) throw new Error("Failed to fetch images");
+      const data = await response.json();
+      setImages(data);
+    } catch (error) {
+      console.error("Error fetching images:", error);
+      toast.error("Failed to refresh images");
+    }
+  }, [propertyId, toast]);
 
   if (!images || images.length === 0) {
     return (
@@ -27,6 +42,7 @@ const PropertyImageList = ({ images, refreshImages, propertyId }) => {
   const handleDelete = async (imageId) => {
     try {
       setIsLoading(true);
+
       const response = await fetch(
         `http://localhost:8000/api/properties/${propertyId}/images/${imageId}`,
         {
@@ -36,20 +52,15 @@ const PropertyImageList = ({ images, refreshImages, propertyId }) => {
 
       if (!response.ok) throw new Error("Failed to delete image");
 
-      toast({
-        title: "Success",
-        description: "Image deleted successfully",
-      });
+      // Update local state first
+      setImages((prevImages) => prevImages.filter((img) => img.id !== imageId));
+
+      toast.success("Image deleted successfully");
 
       setSelectedImage(null);
-      refreshImages();
     } catch (error) {
       console.error("Error deleting image:", error);
-      toast({
-        title: "Error",
-        description: "Failed to delete image",
-        variant: "destructive",
-      });
+      toast.error("Error deleting image");
     } finally {
       setIsLoading(false);
     }
@@ -67,19 +78,20 @@ const PropertyImageList = ({ images, refreshImages, propertyId }) => {
 
       if (!response.ok) throw new Error("Failed to set thumbnail");
 
-      toast({
-        title: "Success",
-        description: "Thumbnail updated successfully",
-      });
+      // Update local state first
+      setImages((prevImages) =>
+        prevImages.map((img) => ({
+          ...img,
+          is_thumbnail: img.id === imageId,
+        }))
+      );
 
-      // refreshImages();
+      toast.success("Thumbnail updated successfully");
+
+      await refreshImages(); // Refresh the images from the server
     } catch (error) {
       console.error("Error setting thumbnail:", error);
-      toast({
-        title: "Error",
-        description: "Failed to set thumbnail",
-        variant: "destructive",
-      });
+      toast.error("Failed to set thumbnail");
     } finally {
       setIsLoading(false);
     }
@@ -103,19 +115,21 @@ const PropertyImageList = ({ images, refreshImages, propertyId }) => {
 
       if (!response.ok) throw new Error("Failed to update visibility");
 
-      toast({
-        title: "Success",
-        description: "Visibility updated successfully",
-      });
+      // Update local state first
+      setImages((prevImages) =>
+        prevImages.map((img) =>
+          img.id === imageId
+            ? { ...img, show_in_portals: !currentVisibility }
+            : img
+        )
+      );
 
-      refreshImages();
+      toast.success("Visibility updated successfully");
+
+      await refreshImages(); // Refresh the images from the server
     } catch (error) {
       console.error("Error toggling visibility:", error);
-      toast({
-        title: "Error",
-        description: "Failed to update visibility",
-        variant: "destructive",
-      });
+      toast.error("Failed to update visibility");
     } finally {
       setIsLoading(false);
     }
@@ -123,7 +137,7 @@ const PropertyImageList = ({ images, refreshImages, propertyId }) => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {images.map((image) => (
           <Card key={image.id} className="relative group overflow-hidden">
             <div className="aspect-square">
@@ -149,7 +163,11 @@ const PropertyImageList = ({ images, refreshImages, propertyId }) => {
 
       <Dialog
         open={!!selectedImage}
-        onOpenChange={(open) => !open && setSelectedImage(null)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedImage(null);
+          }
+        }}
       >
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>

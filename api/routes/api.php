@@ -37,6 +37,7 @@ Route::post('/properties/{property}/images', [PropertyImageController::class, 's
 Route::delete('/properties/{property}/images/{image}', [PropertyImageController::class, 'destroy']);
 Route::put('/properties/{property}/images/{image}/thumbnail', [PropertyImageController::class, 'setThumbnail']);
 Route::get('/properties/{property}/images', [PropertyImageController::class, 'index']);
+Route::patch('/properties/{propertyId}/images/{imageId}', [PropertyImageController::class, 'update']);
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user()->load('roles');
