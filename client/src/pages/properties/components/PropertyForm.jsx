@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import PropertyImages from "./PropertyImages";
+import PropertyDocuments from "./PropertyDocuments";
 
 export function PropertyForm({ property, onSuccess }) {
   const { createProperty, updateProperty, loading } = useProperty();
@@ -240,7 +241,10 @@ export function PropertyForm({ property, onSuccess }) {
               </CardHeader>
               <CardContent>
                 {/* Add your Documents component here */}
-                <p>Documents management interface will go here</p>
+                <PropertyDocuments
+                  propertyId={property.id}
+                  initialDocuments={[]}
+                />
               </CardContent>
             </Card>
           </TabsContent>

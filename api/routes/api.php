@@ -6,6 +6,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\PropertyDocumentController;
 use App\Http\Controllers\PropertyImageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -31,6 +32,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Route::post('/properties/{property}/images', [PropertyImageController::class, 'store']);
     // Route::delete('/properties/{property}/images/{image}', [PropertyImageController::class, 'destroy']);
     // Route::put('/properties/{property}/images/{image}/thumbnail', [PropertyImageController::class, 'setThumbnail']);
+
+    Route::post('properties/{property}/documents', [PropertyDocumentController::class, 'store']);
+    Route::delete('/properties/{property}/documents/{document}', [PropertyDocumentController::class, 'destroy']);
 });
 
 Route::post('/properties/{property}/images', [PropertyImageController::class, 'store']);
