@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { uploadPropertyImages } from "../services/propertyImageService";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 const PropertyImageUpload = ({ propertyId, onUploadSuccess }) => {
   const [uploading, setUploading] = useState(false);
@@ -26,12 +27,13 @@ const PropertyImageUpload = ({ propertyId, onUploadSuccess }) => {
 
   return (
     <div>
-      <input
+      <Input
         type="file"
         multiple
         accept="image/*"
         onChange={handleUpload}
         disabled={uploading}
+        className="w-fit"
       />
       {uploading && <p>Uploading...</p>}
     </div>
